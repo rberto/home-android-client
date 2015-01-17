@@ -1,0 +1,372 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/main_layout2">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#99CC00"
+        android:layout_margin="9dp"
+        android:padding="5dp"
+        android:id="@+id/relative2">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="In: "
+            android:id="@+id/textView10"
+            android:textColor="#669900"
+            android:textSize="20dp"
+            android:layout_alignParentLeft="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="23.0"
+            android:id="@+id/inside_temp2"
+            android:textSize="50dp"
+            android:textColor="#669900"
+            android:textStyle="bold"
+            android:layout_toRightOf="@+id/textView10" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="°C"
+            android:id="@+id/textView13"
+            android:textSize="50dp"
+            android:layout_toRightOf="@+id/inside_temp2"
+            android:layout_alignBaseline="@+id/inside_temp2"
+            android:textColor="#669900" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Out: "
+            android:id="@+id/textView14"
+            android:textColor="#669900"
+            android:textSize="20dp"
+            android:layout_toLeftOf="@+id/out_temp2"
+            android:layout_below="@+id/textView13" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="23.0"
+            android:id="@+id/out_temp2"
+            android:textSize="50dp"
+            android:textColor="#669900"
+            android:textStyle="bold"
+            android:layout_toLeftOf="@+id/textView16"
+            android:layout_below="@+id/textView13" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="°C"
+            android:id="@+id/textView16"
+            android:textSize="50dp"
+            android:textColor="#669900"
+            android:layout_alignParentLeft="false"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/textView13" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="24h average:"
+            android:id="@+id/textView23"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:textColor="#669900"
+            android:textSize="15dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="°C"
+            android:id="@+id/textView24"
+            android:layout_below="@+id/textView23"
+            android:layout_alignParentRight="true"
+            android:textColor="#669900"
+            android:textSize="15dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="--"
+            android:id="@+id/averageintemp"
+            android:layout_alignBaseline="@+id/textView24"
+            android:layout_alignParentLeft="false"
+            android:layout_alignParentRight="false"
+            android:layout_toLeftOf="@+id/textView24"
+            android:textColor="#669900"
+            android:textSize="15dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="--"
+            android:id="@+id/averageouttemp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentBottom="false"
+            android:layout_alignBottom="@+id/out_temp2"
+            android:textStyle="bold"
+            android:textColor="#669900"
+            android:textSize="15dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="°C"
+            android:id="@+id/textView27"
+            android:layout_toRightOf="@+id/averageouttemp"
+            android:layout_alignBaseline="@+id/averageouttemp"
+            android:textStyle="bold"
+            android:textColor="#669900"
+            android:textSize="15dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="24h average:"
+            android:id="@+id/textView28"
+            android:layout_above="@+id/averageouttemp"
+            android:layout_alignParentLeft="true"
+            android:textColor="#669900"
+            android:textSize="15dp" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#99CC00"
+        android:padding="5dp"
+        android:id="@+id/relativeLayout"
+        android:layout_marginLeft="9dp"
+        android:layout_marginRight="9dp"
+        android:layout_marginBottom="9dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="In: "
+            android:id="@+id/textView17"
+            android:textColor="#669900"
+            android:textSize="20dp"
+            android:layout_alignParentLeft="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="10123"
+            android:id="@+id/inside_pressure2"
+            android:textSize="50dp"
+            android:textColor="#669900"
+            android:textStyle="bold"
+            android:layout_toRightOf="@+id/textView17" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Pa"
+            android:id="@+id/textView19"
+            android:textSize="50dp"
+            android:layout_toRightOf="@+id/inside_pressure2"
+            android:layout_alignBaseline="@+id/inside_pressure2"
+            android:textColor="#669900" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Out: "
+            android:id="@+id/textView20"
+            android:textColor="#669900"
+            android:textSize="20dp"
+            android:layout_toLeftOf="@+id/out_pressure2"
+            android:layout_below="@+id/textView19" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="10123"
+            android:id="@+id/out_pressure2"
+            android:textSize="50dp"
+            android:textColor="#669900"
+            android:textStyle="bold"
+            android:layout_toLeftOf="@+id/textView22"
+            android:layout_below="@+id/textView19" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Pa"
+            android:id="@+id/textView22"
+            android:textSize="50dp"
+            android:textColor="#669900"
+            android:layout_alignParentLeft="false"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/textView19" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#99CC00"
+        android:padding="5dp"
+        android:id="@+id/relativeLayout2"
+        android:layout_marginLeft="9dp"
+        android:layout_marginRight="9dp"
+        android:layout_marginBottom="9dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="At:"
+            android:id="@+id/textView12"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="false"
+            android:textColor="#669900"
+            android:layout_marginRight="5dp"
+            android:layout_marginLeft="0dp"
+            android:textSize="20dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginBottom="5dp" />
+
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/tempchart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#99CC00"
+            android:layout_above="@+id/textView12" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="--"
+            android:id="@+id/seltime"
+            android:textColor="#669900"
+            android:layout_alignBaseline="@+id/textView12"
+            android:layout_toRightOf="@+id/textView12"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="5dp"
+            android:textSize="20dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginBottom="5dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="In:"
+            android:id="@+id/textView15"
+            android:layout_toRightOf="@+id/seltime"
+            android:textColor="#669900"
+            android:layout_alignBaseline="@+id/textView12"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="5dp"
+            android:textSize="20dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginBottom="5dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="--"
+            android:id="@+id/selectedintemp"
+            android:textColor="#669900"
+            android:layout_alignBaseline="@+id/textView12"
+            android:layout_toRightOf="@+id/textView15"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="0dp"
+            android:textSize="20dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginBottom="5dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Out:"
+            android:id="@+id/textView16"
+            android:textColor="#669900"
+            android:layout_alignBaseline="@+id/textView12"
+            android:layout_toRightOf="@+id/textView18"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="5dp"
+            android:textSize="20dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginBottom="5dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="°C"
+            android:id="@+id/textView18"
+            android:textSize="20dp"
+            android:textColor="#669900"
+            android:layout_alignParentLeft="false"
+            android:layout_alignParentRight="false"
+            android:layout_alignBaseline="@+id/textView12"
+            android:layout_toRightOf="@+id/selectedintemp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginBottom="5dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="--"
+            android:id="@+id/selectedextemp"
+            android:layout_toRightOf="@+id/textView16"
+            android:textColor="#669900"
+            android:layout_alignBaseline="@+id/textView12"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="0dp"
+            android:textSize="20dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginBottom="5dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="°C"
+            android:id="@+id/textView21"
+            android:textSize="20dp"
+            android:textColor="#669900"
+            android:layout_alignParentLeft="false"
+            android:layout_alignParentRight="false"
+            android:layout_alignBaseline="@+id/textView12"
+            android:layout_toRightOf="@+id/selectedextemp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginBottom="5dp"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
+
+</LinearLayout>
