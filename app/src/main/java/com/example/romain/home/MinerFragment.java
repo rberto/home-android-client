@@ -1,14 +1,23 @@
 package com.example.romain.home;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewManager;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.example.romain.home.chart.ChartUtils;
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.data.LineData;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -25,7 +34,7 @@ import java.lang.ref.WeakReference;
  * Use the {@link MinerFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MinerFragment extends MyFragment {
+public class MinerFragment extends MyFragment implements View.OnClickListener{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -39,6 +48,11 @@ public class MinerFragment extends MyFragment {
 
     private TextView mhashratetext;
     private TextView merrorratetext;
+
+    private boolean hashDisplay = false;
+    private boolean errorDisplay = false;
+
+    private JSONObject json;
 
     /**
      * Use this factory method to create a new instance of
@@ -74,22 +88,15 @@ public class MinerFragment extends MyFragment {
         return inflater.inflate(R.layout.fragment_miner, container, false);
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        /*try {
+        try {
             mListener = (OnFragmentInteractionListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
                     + " must implement OnFragmentInteractionListener");
-        }*/
+        }
     }
 
     public void refresh(){
@@ -102,6 +109,7 @@ public class MinerFragment extends MyFragment {
     }
 
     public void updateUI(JSONObject json) throws JSONException{
+        this.json = json;
         JSONObject summary = json.getJSONArray("SUMMARY").getJSONObject(0);
         mhashratetext.setText(summary.getString("GHS av"));
         merrorratetext.setText(summary.getString("Device Hardware%"));
@@ -112,6 +120,12 @@ public class MinerFragment extends MyFragment {
         super.onResume();
         mhashratetext = (TextView) getActivity().findViewById(R.id.hashrate);
         merrorratetext = (TextView) getActivity().findViewById(R.id.errorrate);
+        Button buttonN = (Button) getActivity().findViewById(R.id.button);
+        LinearLayout l = (LinearLayout) getActivity().findViewById(R.id.hasratelyt);
+        LinearLayout m = (LinearLayout) getActivity().findViewById(R.id.errorratelyt);
+        l.setOnClickListener(this);
+        m.setOnClickListener(this);
+        buttonN.setOnClickListener(this);
         refresh();
     }
 
@@ -121,6 +135,78 @@ public class MinerFragment extends MyFragment {
         mListener = null;
         mhashratetext = null;
         merrorratetext = null;
+    }
+
+    public void displayMoreFragment(View v){
+
+    }
+
+    @Override
+    public void onClick(View view) {
+        if (view.getId() == R.id.button){
+            mListener.onFragmentInteraction(json);
+        }
+        if (view.getId() == R.id.hasratelyt){
+            LineData data = null;
+            try {
+                data = ChartUtils.createLineData(json.getJSONArray("hash24"), new String[]{"HashRate"});
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            if (hashDisplay){
+                removeChart();
+                hashDisplay = false;
+            }else {
+                removeChart();
+                addChart(createChart(data));
+                hashDisplay = true;
+            }
+        }
+        if (view.getId() == R.id.errorratelyt){
+            LineData data = null;
+            try {
+                data = ChartUtils.createLineData(json.getJSONArray("error24"), new String[]{"HashRate"});
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            if (errorDisplay) {
+                removeChart();
+                errorDisplay = false;
+            }else {
+                removeChart();
+                addChart(createChart(data));
+                errorDisplay = true;
+            }
+        }
+    }
+
+    private LineChart createChart(LineData data){
+        LineChart chart = new LineChart(getActivity());
+        chart.setData(data);
+        chart.setDrawHorizontalGrid(false);
+        chart.setDrawVerticalGrid(false);
+        chart.setDrawGridBackground(false);
+        chart.setDescription("");
+        chart.setStartAtZero(false);
+        chart.setDrawLegend(false);
+        chart.setDoubleTapToZoomEnabled(false);
+        //chart.setOnChartValueSelectedListener(this);
+        chart.animateX(1000);
+        chart.setTag("Chart");
+        return chart;
+    }
+
+    private void addChart(LineChart chart){
+        LinearLayout l = (LinearLayout) getActivity().findViewById(R.id.verticallyt);
+        l.addView(chart);
+    }
+
+    private void removeChart(){
+        LinearLayout l = (LinearLayout) getActivity().findViewById(R.id.verticallyt);
+        View v = l.findViewWithTag("Chart");
+        if (v != null){
+            ((ViewManager)v.getParent()).removeView(v);
+        }
     }
 
     /**
@@ -135,7 +221,7 @@ public class MinerFragment extends MyFragment {
      */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        public void onFragmentInteraction(Uri uri);
+        public void onFragmentInteraction(JSONObject json);
     }
 
 }

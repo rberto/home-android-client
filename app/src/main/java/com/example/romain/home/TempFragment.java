@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.romain.home.chart.ChartUtils;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
@@ -111,27 +112,7 @@ public class TempFragment extends MyFragment implements OnChartValueSelectedList
         mOutsidePressure.setText(json.getString("pressure_ext"));
         mInsidePressure.setText(json.getString("pressure"));
         JSONArray temp24json = json.getJSONArray("temp24");
-        for(int i = 0; i < temp24json.length(); i++){
-            Entry interior =  new Entry(Float.valueOf(temp24json.getJSONArray(i).getString(1)), i);
-            interiors.add(interior);
-            Entry exterior =  new Entry(Float.valueOf(temp24json.getJSONArray(i).getString(2)), i);
-            exteriors.add(exterior);
-            String date = temp24json.getJSONArray(i).getString(0);
-            xVals.add(date);
-        }
-        LineDataSet setinteriors = new LineDataSet(interiors, "Inside Temp");
-        //setinteriors.enableDashedLine(1,0,0);
-        setinteriors.setDrawCircles(false);
-        setinteriors.setColor(Color.BLUE);
-        setinteriors.setLineWidth(2);
-        LineDataSet setexteriors = new LineDataSet(exteriors, "Outside Temp");
-        setexteriors.setDrawCircles(false);
-        setexteriors.setLineWidth(2);
-        setexteriors.setColor(Color.RED);
-        ArrayList<LineDataSet> dataSets = new ArrayList<LineDataSet>();
-        dataSets.add(setinteriors);
-        dataSets.add(setexteriors);
-        LineData data = new LineData(xVals, dataSets);
+        LineData data = ChartUtils.createLineData(temp24json, new String[]{"Inside Temp", "Exterior Temp"});
         lcTempLineChart.setDrawHorizontalGrid(false);
         lcTempLineChart.setDrawVerticalGrid(false);
         lcTempLineChart.setDrawGridBackground(false);
@@ -144,8 +125,8 @@ public class TempFragment extends MyFragment implements OnChartValueSelectedList
         lcTempLineChart.animateX(1500);
 
         // Updating the 24h average.
-        Float averageintemp = setinteriors.getYValueSum() / setinteriors.getEntryCount();
-        Float averageouttemp = setexteriors.getYValueSum() / setexteriors.getEntryCount();
+        Float averageintemp = data.getDataSetByIndex(0).getYValueSum() / data.getDataSetByIndex(0).getEntryCount();
+        Float averageouttemp = data.getDataSetByIndex(1).getYValueSum() / data.getDataSetByIndex(1).getEntryCount();
         mAverageInTemp.setText(new DecimalFormat("##.##").format(averageintemp));
         mAverageOutTemp.setText(new DecimalFormat("##.##").format(averageouttemp));
     }
