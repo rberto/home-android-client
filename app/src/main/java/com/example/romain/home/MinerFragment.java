@@ -161,6 +161,7 @@ public class MinerFragment extends MyFragment implements View.OnClickListener{
                 addChart(createChart(data));
                 hashDisplay = true;
             }
+            errorDisplay = false;
         }
         if (view.getId() == R.id.errorratelyt){
             LineData data = null;
@@ -177,6 +178,7 @@ public class MinerFragment extends MyFragment implements View.OnClickListener{
                 addChart(createChart(data));
                 errorDisplay = true;
             }
+            hashDisplay = false;
         }
     }
 
