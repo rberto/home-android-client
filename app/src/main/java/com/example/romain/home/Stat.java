@@ -1,6 +1,5 @@
 package com.example.romain.home;
 
-import android.renderscript.Sampler;
 import android.util.Log;
 
 import org.json.JSONArray;

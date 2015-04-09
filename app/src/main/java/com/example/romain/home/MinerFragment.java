@@ -1,29 +1,28 @@
 package com.example.romain.home;
 
 import android.app.Activity;
-import android.content.DialogInterface;
-import android.net.Uri;
-import android.os.Bundle;
 import android.app.Fragment;
-import android.provider.ContactsContract;
-import android.util.Log;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.romain.home.chart.ChartUtils;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.LineData;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.ref.WeakReference;
+
+import static android.graphics.Color.DKGRAY;
+import static android.graphics.Color.GRAY;
 
 
 /**
@@ -48,9 +47,12 @@ public class MinerFragment extends MyFragment implements View.OnClickListener{
 
     private TextView mhashratetext;
     private TextView merrorratetext;
+    private TextView asicTemp1;
+    private TextView asicTemp2;
 
     private boolean hashDisplay = false;
     private boolean errorDisplay = false;
+    private boolean asicDisplay = false;
 
     private JSONObject json;
 
@@ -113,6 +115,9 @@ public class MinerFragment extends MyFragment implements View.OnClickListener{
         JSONObject summary = json.getJSONArray("SUMMARY").getJSONObject(0);
         mhashratetext.setText(summary.getString("GHS av"));
         merrorratetext.setText(summary.getString("Device Hardware%"));
+        JSONObject stats = json.getJSONArray("STATS").getJSONObject(0);
+        asicTemp1.setText(stats.getString("temp1"));
+        asicTemp2.setText(stats.getString("temp2"));
     }
 
     @Override
@@ -120,9 +125,13 @@ public class MinerFragment extends MyFragment implements View.OnClickListener{
         super.onResume();
         mhashratetext = (TextView) getActivity().findViewById(R.id.hashrate);
         merrorratetext = (TextView) getActivity().findViewById(R.id.errorrate);
+        asicTemp1 = (TextView) getActivity().findViewById(R.id.asic_temp1);
+        asicTemp2 = (TextView) getActivity().findViewById(R.id.asic_temp2);
         Button buttonN = (Button) getActivity().findViewById(R.id.button);
         LinearLayout l = (LinearLayout) getActivity().findViewById(R.id.hasratelyt);
         LinearLayout m = (LinearLayout) getActivity().findViewById(R.id.errorratelyt);
+        LinearLayout a = (LinearLayout) getActivity().findViewById(R.id.asictemps);
+        a.setOnClickListener(this);
         l.setOnClickListener(this);
         m.setOnClickListener(this);
         buttonN.setOnClickListener(this);
@@ -146,10 +155,28 @@ public class MinerFragment extends MyFragment implements View.OnClickListener{
         if (view.getId() == R.id.button){
             mListener.onFragmentInteraction(json);
         }
+        if (view.getId() == R.id.asictemps){
+            LineData data = null;
+            try {
+                data = ChartUtils.createLineData(json.getJSONArray("asic_temp"), new String[]{"Temp1", "Temp2"}, new int[]{DKGRAY, GRAY});
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            if (asicDisplay){
+                removeChart();
+                asicDisplay = false;
+            }else{
+                removeChart();
+                hashDisplay = false;
+                errorDisplay = false;
+                addChart(createChart(data));
+                asicDisplay = true;
+            }
+        }
         if (view.getId() == R.id.hasratelyt){
             LineData data = null;
             try {
-                data = ChartUtils.createLineData(json.getJSONArray("hash24"), new String[]{"HashRate"});
+                data = ChartUtils.createLineData(json.getJSONArray("hash24"), new String[]{"HashRate"}, new int[]{DKGRAY});
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -158,15 +185,16 @@ public class MinerFragment extends MyFragment implements View.OnClickListener{
                 hashDisplay = false;
             }else {
                 removeChart();
+                asicDisplay = false;
+                errorDisplay = false;
                 addChart(createChart(data));
                 hashDisplay = true;
             }
-            errorDisplay = false;
         }
         if (view.getId() == R.id.errorratelyt){
             LineData data = null;
             try {
-                data = ChartUtils.createLineData(json.getJSONArray("error24"), new String[]{"HashRate"});
+                data = ChartUtils.createLineData(json.getJSONArray("error24"), new String[]{"ErrorRate"}, new int[]{DKGRAY});
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -175,10 +203,11 @@ public class MinerFragment extends MyFragment implements View.OnClickListener{
                 errorDisplay = false;
             }else {
                 removeChart();
+                hashDisplay = false;
+                asicDisplay = false;
                 addChart(createChart(data));
                 errorDisplay = true;
             }
-            hashDisplay = false;
         }
     }
 
@@ -199,16 +228,32 @@ public class MinerFragment extends MyFragment implements View.OnClickListener{
     }
 
     private void addChart(LineChart chart){
-        LinearLayout l = (LinearLayout) getActivity().findViewById(R.id.verticallyt);
-        l.addView(chart);
+        /*LinearLayout l = (LinearLayout) getActivity().findViewById(R.id.verticallyt);
+        l.addView(chart);*/
+        RelativeLayout re = (RelativeLayout) getActivity().findViewById(R.id.relative);
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        params.addRule(RelativeLayout.BELOW, R.id.verticallyt);
+        params.addRule(RelativeLayout.ABOVE, R.id.button);
+        re.addView(chart, params);
+        View positiveButton = getActivity().findViewById(R.id.verticallyt);
+        RelativeLayout.LayoutParams layoutParams =
+                (RelativeLayout.LayoutParams)positiveButton.getLayoutParams();
+        layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT, 0);
+        positiveButton.setLayoutParams(layoutParams);
+
     }
 
     private void removeChart(){
-        LinearLayout l = (LinearLayout) getActivity().findViewById(R.id.verticallyt);
+        RelativeLayout l = (RelativeLayout) getActivity().findViewById(R.id.relative);
         View v = l.findViewWithTag("Chart");
         if (v != null){
             ((ViewManager)v.getParent()).removeView(v);
         }
+        View positiveButton = getActivity().findViewById(R.id.verticallyt);
+        RelativeLayout.LayoutParams layoutParams =
+                (RelativeLayout.LayoutParams)positiveButton.getLayoutParams();
+        layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
+        positiveButton.setLayoutParams(layoutParams);
     }
 
     /**

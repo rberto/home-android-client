@@ -1,11 +1,9 @@
 package com.example.romain.home;
 
 import android.app.Activity;
-import android.graphics.Color;
+import android.app.Fragment;
 import android.net.Uri;
 import android.os.Bundle;
-import android.app.Fragment;
-import android.os.DropBoxManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,17 +14,18 @@ import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
-import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.OnChartValueSelectedListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.lang.ref.WeakReference;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+
+import static android.graphics.Color.DKGRAY;
+import static android.graphics.Color.GRAY;
 
 
 /**
@@ -112,7 +111,7 @@ public class TempFragment extends MyFragment implements OnChartValueSelectedList
         mOutsidePressure.setText(json.getString("pressure_ext"));
         mInsidePressure.setText(json.getString("pressure"));
         JSONArray temp24json = json.getJSONArray("temp24");
-        LineData data = ChartUtils.createLineData(temp24json, new String[]{"Inside Temp", "Exterior Temp"});
+        LineData data = ChartUtils.createLineData(temp24json, new String[]{"Inside Temp", "Exterior Temp"}, new int[]{DKGRAY, GRAY});
         lcTempLineChart.setDrawHorizontalGrid(false);
         lcTempLineChart.setDrawVerticalGrid(false);
         lcTempLineChart.setDrawGridBackground(false);

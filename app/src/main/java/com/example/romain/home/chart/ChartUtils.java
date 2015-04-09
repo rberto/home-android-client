@@ -1,7 +1,5 @@
 package com.example.romain.home.chart;
 
-import android.graphics.Color;
-
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
@@ -10,7 +8,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by romain on 22/03/15.
@@ -18,7 +15,7 @@ import java.util.List;
 public class ChartUtils {
 
 
-    public static LineData createLineData(JSONArray array, String[] names) throws JSONException {
+    public static LineData createLineData(JSONArray array, String[] names, int[] colors) throws JSONException {
         ArrayList<String> xVals = new ArrayList<String>();
         ArrayList<LineDataSet> dataSets = new ArrayList<LineDataSet>();
 
@@ -41,7 +38,7 @@ public class ChartUtils {
             LineDataSet set = new LineDataSet(data, names[p]);
             //setinteriors.enableDashedLine(1,0,0);
             set.setDrawCircles(false);
-            set.setColor(Color.BLUE);
+            set.setColor(colors[p]);
             set.setLineWidth(2);
             dataSets.add(set);
             p++;
