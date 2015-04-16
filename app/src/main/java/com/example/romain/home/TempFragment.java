@@ -97,21 +97,19 @@ public class TempFragment extends MyFragment implements OnChartValueSelectedList
         mOutideTempText.setText("--");
         mOutsidePressure.setText("--");
         mInsidePressure.setText("--");
+        lcTempLineChart.clear();
         getRequest request = new getRequest(this);
         asyncTaskWeakRef = new WeakReference<getRequest>(request);
         request.execute("http://" + ip + ":8889/api?user=romain&password=azerty&datatype=weather");
     }
 
     public void updateUI(JSONObject json) throws JSONException {
-        ArrayList<Entry> interiors = new ArrayList<Entry>();
-        ArrayList<Entry> exteriors = new ArrayList<Entry>();
-        ArrayList<String> xVals = new ArrayList<String>();
         mInsideTempText.setText(json.getString("temp"));
         mOutideTempText.setText(json.getString("temp_ext"));
         mOutsidePressure.setText(json.getString("pressure_ext"));
         mInsidePressure.setText(json.getString("pressure"));
         JSONArray temp24json = json.getJSONArray("temp24");
-        LineData data = ChartUtils.createLineData(temp24json, new String[]{"Inside Temp", "Exterior Temp"}, new int[]{DKGRAY, GRAY});
+        LineData data = ChartUtils.createLineData(temp24json, new String[]{"Inside Temp", "Outside Temp"}, new int[]{DKGRAY, GRAY});
         lcTempLineChart.setDrawHorizontalGrid(false);
         lcTempLineChart.setDrawVerticalGrid(false);
         lcTempLineChart.setDrawGridBackground(false);

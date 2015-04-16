@@ -2,7 +2,9 @@ package com.example.romain.home;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,6 +58,8 @@ public class MinerFragment extends MyFragment implements View.OnClickListener{
 
     private JSONObject json;
 
+    private int margin;
+
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -81,6 +85,7 @@ public class MinerFragment extends MyFragment implements View.OnClickListener{
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        margin = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 9, getResources().getDisplayMetrics());
     }
 
     @Override
@@ -103,8 +108,18 @@ public class MinerFragment extends MyFragment implements View.OnClickListener{
 
     public void refresh(){
         super.refresh();
+        Button buttonN = (Button) getActivity().findViewById(R.id.button);
+        LinearLayout l = (LinearLayout) getActivity().findViewById(R.id.hasratelyt);
+        LinearLayout m = (LinearLayout) getActivity().findViewById(R.id.errorratelyt);
+        LinearLayout a = (LinearLayout) getActivity().findViewById(R.id.asictemps);
+        a.setOnClickListener(null);
+        l.setOnClickListener(null);
+        m.setOnClickListener(null);
+        buttonN.setOnClickListener(null);
         mhashratetext.setText("--");
         merrorratetext.setText("--");
+        asicTemp2.setText("--");
+        asicTemp1.setText("--");
         getRequest request = new getRequest(this);
         this.asyncTaskWeakRef = new WeakReference<getRequest>(request);
         request.execute("http://" + ip + ":8889/api?user=romain&password=azerty&datatype=miner");
@@ -118,6 +133,14 @@ public class MinerFragment extends MyFragment implements View.OnClickListener{
         JSONObject stats = json.getJSONArray("STATS").getJSONObject(0);
         asicTemp1.setText(stats.getString("temp1"));
         asicTemp2.setText(stats.getString("temp2"));
+        Button buttonN = (Button) getActivity().findViewById(R.id.button);
+        LinearLayout l = (LinearLayout) getActivity().findViewById(R.id.hasratelyt);
+        LinearLayout m = (LinearLayout) getActivity().findViewById(R.id.errorratelyt);
+        LinearLayout a = (LinearLayout) getActivity().findViewById(R.id.asictemps);
+        a.setOnClickListener(this);
+        l.setOnClickListener(this);
+        m.setOnClickListener(this);
+        buttonN.setOnClickListener(this);
     }
 
     @Override
@@ -127,14 +150,6 @@ public class MinerFragment extends MyFragment implements View.OnClickListener{
         merrorratetext = (TextView) getActivity().findViewById(R.id.errorrate);
         asicTemp1 = (TextView) getActivity().findViewById(R.id.asic_temp1);
         asicTemp2 = (TextView) getActivity().findViewById(R.id.asic_temp2);
-        Button buttonN = (Button) getActivity().findViewById(R.id.button);
-        LinearLayout l = (LinearLayout) getActivity().findViewById(R.id.hasratelyt);
-        LinearLayout m = (LinearLayout) getActivity().findViewById(R.id.errorratelyt);
-        LinearLayout a = (LinearLayout) getActivity().findViewById(R.id.asictemps);
-        a.setOnClickListener(this);
-        l.setOnClickListener(this);
-        m.setOnClickListener(this);
-        buttonN.setOnClickListener(this);
         refresh();
     }
 
@@ -157,11 +172,6 @@ public class MinerFragment extends MyFragment implements View.OnClickListener{
         }
         if (view.getId() == R.id.asictemps){
             LineData data = null;
-            try {
-                data = ChartUtils.createLineData(json.getJSONArray("asic_temp"), new String[]{"Temp1", "Temp2"}, new int[]{DKGRAY, GRAY});
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
             if (asicDisplay){
                 removeChart();
                 asicDisplay = false;
@@ -169,17 +179,18 @@ public class MinerFragment extends MyFragment implements View.OnClickListener{
                 removeChart();
                 hashDisplay = false;
                 errorDisplay = false;
+                try {
+                    data = ChartUtils.createLineData(json.getJSONArray("asic_temp"), new String[]{"Temp1", "Temp2"}, new int[]{DKGRAY, GRAY});
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
                 addChart(createChart(data));
                 asicDisplay = true;
             }
         }
         if (view.getId() == R.id.hasratelyt){
             LineData data = null;
-            try {
-                data = ChartUtils.createLineData(json.getJSONArray("hash24"), new String[]{"HashRate"}, new int[]{DKGRAY});
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+
             if (hashDisplay){
                 removeChart();
                 hashDisplay = false;
@@ -187,17 +198,17 @@ public class MinerFragment extends MyFragment implements View.OnClickListener{
                 removeChart();
                 asicDisplay = false;
                 errorDisplay = false;
+                try {
+                    data = ChartUtils.createLineData(json.getJSONArray("hash24"), new String[]{"HashRate"}, new int[]{DKGRAY});
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
                 addChart(createChart(data));
                 hashDisplay = true;
             }
         }
         if (view.getId() == R.id.errorratelyt){
             LineData data = null;
-            try {
-                data = ChartUtils.createLineData(json.getJSONArray("error24"), new String[]{"ErrorRate"}, new int[]{DKGRAY});
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
             if (errorDisplay) {
                 removeChart();
                 errorDisplay = false;
@@ -205,6 +216,11 @@ public class MinerFragment extends MyFragment implements View.OnClickListener{
                 removeChart();
                 hashDisplay = false;
                 asicDisplay = false;
+                try {
+                    data = ChartUtils.createLineData(json.getJSONArray("error24"), new String[]{"ErrorRate"}, new int[]{DKGRAY});
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
                 addChart(createChart(data));
                 errorDisplay = true;
             }
@@ -228,13 +244,13 @@ public class MinerFragment extends MyFragment implements View.OnClickListener{
     }
 
     private void addChart(LineChart chart){
-        /*LinearLayout l = (LinearLayout) getActivity().findViewById(R.id.verticallyt);
-        l.addView(chart);*/
         RelativeLayout re = (RelativeLayout) getActivity().findViewById(R.id.relative);
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         params.addRule(RelativeLayout.BELOW, R.id.verticallyt);
         params.addRule(RelativeLayout.ABOVE, R.id.button);
+        params.setMargins(margin, 0, margin, margin);
         re.addView(chart, params);
+        chart.setBackgroundColor(Color.parseColor("#99CC00"));
         View positiveButton = getActivity().findViewById(R.id.verticallyt);
         RelativeLayout.LayoutParams layoutParams =
                 (RelativeLayout.LayoutParams)positiveButton.getLayoutParams();

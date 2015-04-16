@@ -13,27 +13,36 @@
         android:text="More >"
         android:id="@+id/button"
         android:layout_alignParentBottom="true"
-        android:onClick="displayMoreFragment" />
+        android:onClick="displayMoreFragment"
+        android:textColor="#669900"
+        android:background="#99CC00"
+        android:layout_marginRight="9dp"
+        android:layout_marginBottom="9dp"
+        android:layout_marginLeft="9dp" />
 
     <LinearLayout
         android:id="@+id/verticallyt"
         android:orientation="vertical"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true">
 
     <LinearLayout
         android:orientation="horizontal"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content">
 
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
+            android:background="#99CC00"
             android:id="@+id/hasratelyt"
-            android:layout_centerInParent="true">
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="9dp"
+            android:layout_marginTop="9dp"
+            android:layout_marginRight="9dp"
+            android:layout_weight="1">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -41,8 +50,9 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="Hash Rate"
                 android:id="@+id/hashratetitle"
-                android:layout_margin="10dp"
-                android:layout_gravity="center" />
+                android:layout_margin="9dp"
+                android:layout_gravity="center"
+                android:textColor="#669900" />
 
             <LinearLayout
                 android:orientation="horizontal"
@@ -56,7 +66,13 @@
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:text="--"
                     android:id="@+id/hashrate"
-                    android:layout_margin="10dp" />
+                    android:textColor="#669900"
+                    android:textSize="30dp"
+                    android:textStyle="bold"
+                    android:layout_marginLeft="9dp"
+                    android:layout_marginTop="9dp"
+                    android:layout_marginBottom="9dp"
+                    android:layout_gravity="center_vertical" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -64,7 +80,11 @@
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:text="GH/s"
                     android:id="@+id/textView6"
-                    android:layout_margin="10dp" />
+                    android:layout_margin="9dp"
+                    android:textColor="#669900"
+                    android:textSize="25dp"
+                    android:textStyle="bold"
+                    android:layout_gravity="center_vertical" />
             </LinearLayout>
 
         </LinearLayout>
@@ -73,9 +93,12 @@
             android:orientation="vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="#99CC00"
             android:id="@+id/errorratelyt"
             android:layout_toRightOf="@+id/hasratelyt"
-            android:layout_margin="10dp">
+            android:layout_marginTop="9dp"
+            android:layout_marginRight="9dp"
+            android:layout_weight="1">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -83,7 +106,9 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="Error Rate"
                 android:id="@+id/textView9"
-                android:layout_margin="10dp" />
+                android:layout_margin="9dp"
+                android:layout_gravity="center_horizontal"
+                android:textColor="#669900" />
 
             <LinearLayout
                 android:orientation="horizontal"
@@ -97,7 +122,13 @@
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:text="--"
                     android:id="@+id/errorrate"
-                    android:layout_margin="10dp" />
+                    android:textColor="#669900"
+                    android:textSize="30dp"
+                    android:textStyle="bold"
+                    android:layout_marginLeft="9dp"
+                    android:layout_marginTop="9dp"
+                    android:layout_marginBottom="9dp"
+                    android:layout_gravity="center_vertical" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -105,8 +136,12 @@
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:text="%"
                     android:id="@+id/textView11"
-                    android:layout_margin="10dp"
-                    android:singleLine="true" />
+                    android:layout_margin="9dp"
+                    android:singleLine="true"
+                    android:textColor="#669900"
+                    android:textSize="25dp"
+                    android:textStyle="bold"
+                    android:layout_gravity="center_vertical" />
             </LinearLayout>
         </LinearLayout>
 
@@ -116,14 +151,18 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:id="@+id/asictemps">
+            android:id="@+id/asictemps"
+            android:background="#99CC00"
+            android:layout_margin="9dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Asic Temperature"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:layout_gravity="center_horizontal" />
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="9dp"
+            android:textColor="#669900" />
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -140,16 +179,24 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="--"
-                    android:layout_margin="10dp"
+                    android:layout_margin="9dp"
                     android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:id="@+id/asic_temp1" />
+                    android:id="@+id/asic_temp1"
+                    android:textColor="#669900"
+                    android:textSize="30dp"
+                    android:textStyle="bold"
+                    android:layout_gravity="center_vertical" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="°C"
                     android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:layout_margin="10dp" />
+                    android:layout_margin="9dp"
+                    android:textColor="#669900"
+                    android:textSize="25dp"
+                    android:textStyle="bold"
+                    android:layout_gravity="center_vertical" />
 
             </LinearLayout>
 
@@ -166,8 +213,12 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/asic_temp2"
                     android:text="--"
-                    android:layout_margin="10dp"
-                    android:textAppearance="?android:attr/textAppearanceLarge" />
+                    android:layout_margin="9dp"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textColor="#669900"
+                    android:textSize="30dp"
+                    android:textStyle="bold"
+                    android:layout_gravity="center_vertical" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -175,7 +226,11 @@
                     android:id="@+id/textView26"
                     android:text="°C"
                     android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:layout_margin="10dp" />
+                    android:layout_margin="9dp"
+                    android:textColor="#669900"
+                    android:textSize="25dp"
+                    android:textStyle="bold"
+                    android:layout_gravity="center_vertical" />
             </LinearLayout>
         </LinearLayout>
         </LinearLayout>
