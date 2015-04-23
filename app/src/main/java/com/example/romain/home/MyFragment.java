@@ -77,6 +77,20 @@ public class MyFragment extends Fragment {
 
     };
 
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        ConnectivityManager connManager = (ConnectivityManager)  getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+
+        if (mWifi.isConnected()){
+            ip = "192.168.1.92";
+        }else{
+            ip = "212.194.111.127";
+        }
+    }
+
     public void error(){
         Context context = getActivity().getApplicationContext();
         CharSequence text = "Error occurred! No refresh possible!";
@@ -88,13 +102,6 @@ public class MyFragment extends Fragment {
     };
 
     public void refresh(){
-        ConnectivityManager connManager = (ConnectivityManager)  getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
 
-        if (mWifi.isConnected()){
-            ip = "192.168.1.92";
-        }else{
-            ip = "212.194.111.127";
-        }
     };
 }

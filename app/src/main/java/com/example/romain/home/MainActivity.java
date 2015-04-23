@@ -63,6 +63,11 @@ public class MainActivity extends Activity
             case 2:
                 current_fragment = new NetworkFragment();
                 current_fragment = NetworkFragment.newInstance();
+                break;
+            case 3:
+                current_fragment = new ActionFragment();
+                current_fragment = ActionFragment.newInstance();
+                break;
         }
         fragmentManager.beginTransaction()
                 .replace(R.id.container, current_fragment)
@@ -79,6 +84,9 @@ public class MainActivity extends Activity
                 break;
             case 3:
                 mTitle = "NetWork";
+                break;
+            case 4:
+                mTitle = "Actions";
                 break;
         }
     }
