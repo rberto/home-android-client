@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="wrap_content"
+    android:padding="5dp"
+    android:background="#99CC00">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Title"
+        android:id="@+id/title"
+        android:layout_alignParentTop="false"
+        android:layout_centerHorizontal="true"
+        android:textStyle="bold"
+        android:textColor="#669900"
+        android:layout_alignParentBottom="false"
+        android:layout_alignBottom="@+id/unit"
+        android:layout_toRightOf="@+id/unit" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="23.52"
+        android:id="@+id/value"
+        android:textSize="50dp"
+        android:layout_alignParentTop="true"
+        android:textColor="#669900"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="°C"
+        android:id="@+id/unit"
+        android:layout_alignTop="@+id/value"
+        android:layout_toRightOf="@+id/value"
+        android:textSize="50dp"
+        android:textColor="#669900" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="°C"
+        android:id="@+id/avgunit"
+        android:layout_alignParentTop="false"
+        android:layout_alignParentRight="true"
+        android:textColor="#669900"
+        android:layout_below="@+id/textView35" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="24.5"
+        android:id="@+id/avgvalue"
+        android:layout_alignBottom="@+id/avgunit"
+        android:layout_toLeftOf="@+id/avgunit"
+        android:textColor="#669900"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="24h avg"
+        android:id="@+id/textView35"
+        android:layout_alignParentTop="true"
+        android:textColor="#669900"
+        android:layout_alignParentRight="true"
+        android:textSize="15dp" />
+</RelativeLayout>

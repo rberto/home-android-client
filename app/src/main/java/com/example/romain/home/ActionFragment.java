@@ -103,11 +103,11 @@ public class ActionFragment extends MyFragment implements View.OnClickListener{
 
     @Override
     public void onClick(View view) {
-        if (view.getId() == R.id.shutdownall){
-            getRequest request = new getRequest(this);
-            this.asyncTaskWeakRef = new WeakReference<getRequest>(request);
-            request.execute("http://" + ip + ":8889/api?user=romain&password=azerty&datatype=action&name=shutdown_all");
-        }
+//        if (view.getId() == R.id.shutdownall){
+//            getRequest request = new getRequest(this);
+//            this.asyncTaskWeakRef = new WeakReference<getRequest>(request);
+//            request.execute("http://" + ip + ":8889/api?user=romain&password=azerty&datatype=action&name=shutdown_all");
+//        }
 
     }
 

@@ -13,11 +13,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.romain.home.model.RequestSender;
+import com.example.romain.home.model.Requests;
+import com.example.romain.home.views.ItemFragment;
+
 import org.json.JSONObject;
 
 
 public class MainActivity extends Activity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks, MinerFragment.OnFragmentInteractionListener{
+        implements NavigationDrawerFragment.NavigationDrawerCallbacks, MinerFragment.OnFragmentInteractionListener, RequestReciever{
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
@@ -29,7 +33,7 @@ public class MainActivity extends Activity
      */
     private CharSequence mTitle;
 
-    private MyFragment current_fragment;
+    private Fragment current_fragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,17 +48,20 @@ public class MainActivity extends Activity
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
+        RequestSender.getInstance().setAddress("192.168.1.92");
+        RequestSender.getInstance().setPassword("azerty");
+        RequestSender.getInstance().setPort("8889");
+        RequestSender.getInstance().setUser("romain");
     }
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {
         // update the main content by replacing fragments
-        FragmentManager fragmentManager = getFragmentManager();
 
         switch(position) {
             case 0:
-                current_fragment = new TempFragment();
-                current_fragment = TempFragment.newInstance();
+                getRequest request = new getRequest(this);
+                request.execute(Requests.SUMMARY);
                 break;
             case 1:
                 current_fragment = new MinerFragment();
@@ -69,9 +76,7 @@ public class MainActivity extends Activity
                 current_fragment = ActionFragment.newInstance();
                 break;
         }
-        fragmentManager.beginTransaction()
-                .replace(R.id.container, current_fragment)
-                .commit();
+
     }
 
     public void onSectionAttached(int number) {
@@ -120,10 +125,10 @@ public class MainActivity extends Activity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.refresh) {
-            current_fragment.refresh();
-            return true;
-        }
+//        if (id == R.id.refresh) {
+//            current_fragment.refresh();
+//            return true;
+//        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -132,9 +137,31 @@ public class MainActivity extends Activity
     public void onFragmentInteraction(JSONObject json) {
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction trans = fragmentManager.beginTransaction();
-        trans.replace(R.id.container, ItemFragment.newInstance(json));
+        trans.replace(R.id.container, ItemFragment2.newInstance(json));
         trans.addToBackStack(null);
         trans.commit();
+    }
+
+    @Override
+    public void onResponce(JSONObject responce, Requests request) {
+        FragmentManager fragmentManager = getFragmentManager();
+
+        switch (request){
+            case SUMMARY:
+                current_fragment = ItemFragment.newInstance();
+                break;
+            default:
+                break;
+        }
+        fragmentManager.beginTransaction()
+                .replace(R.id.container, current_fragment)
+                .commit();
+
+    }
+
+    @Override
+    public Activity getAct() {
+        return this;
     }
 
 

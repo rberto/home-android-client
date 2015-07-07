@@ -6,80 +6,41 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.StatusLine;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
+import com.example.romain.home.model.RequestSender;
+import com.example.romain.home.model.Requests;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.lang.ref.WeakReference;
 
 /**
  * Created by romain on 30/11/14.
  */
-public class getRequest extends AsyncTask<String, Integer, String> {
+public class getRequest extends AsyncTask<Requests, Integer, String> {
 
     private Context mContext;
-    private WeakReference<MyFragment> fragmentWeakRef;
+    private WeakReference<RequestReciever> fragmentWeakRef;
+    private Requests request;
 
-    public getRequest(MyFragment frag){
-        this.fragmentWeakRef = new WeakReference<MyFragment>(frag);
+    public getRequest(RequestReciever frag){
+        this.fragmentWeakRef = new WeakReference<RequestReciever>(frag);
     }
 
     private boolean isOnline() {
         ConnectivityManager cm =
-                (ConnectivityManager) fragmentWeakRef.get().getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+                (ConnectivityManager) fragmentWeakRef.get().getAct().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
         return netInfo != null && netInfo.isConnected();
     }
 
     @Override
-    protected String doInBackground(String... uri) {
-        HttpClient httpclient = new DefaultHttpClient();
-        HttpResponse response;
-        String responseString = null;
-        try {
-            if (!isOnline()){
-                throw new IllegalStateException();
-            }
-            response = httpclient.execute(new HttpGet(uri[0]));
-            Log.i("HOME", "executed");
-            StatusLine statusLine = response.getStatusLine();
-            Log.i("HOME", "statusline read");
-
-            if (statusLine.getStatusCode() == HttpStatus.SC_OK) {
-                Log.i("HOME", "statusline OK");
-
-                ByteArrayOutputStream out = new ByteArrayOutputStream();
-                response.getEntity().writeTo(out);
-                out.close();
-                Log.i("HOME", "closed");
-
-                responseString = out.toString();
-            } else {
-                //Closes the connection.
-                Log.e("HOME", "statusline KO");
-
-                response.getEntity().getContent().close();
-                throw new IOException(statusLine.getReasonPhrase());
-            }
-        } catch (ClientProtocolException e) {
-            Log.e("HOME", "ClientProtocolException");
-            e.printStackTrace();
-        } catch (IOException e) {
-            Log.e("HOME", "IOException");
-            e.printStackTrace();
-        } catch (IllegalStateException e){
-            Log.e("HOME", "No network connection!");
-            e.printStackTrace();
+    protected String doInBackground(Requests... r) {
+        request = r[0];
+        if (!isOnline()){
+            throw new IllegalStateException();
         }
-        return responseString;
+        return RequestSender.getInstance().sendRequest(request);
     }
 
     @Override
@@ -95,15 +56,16 @@ public class getRequest extends AsyncTask<String, Integer, String> {
                 e.printStackTrace();
             }
             if (this.fragmentWeakRef.get() != null) {
-                try {
-                    this.fragmentWeakRef.get().updateUI(mainObject);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+//                try {
+                this.fragmentWeakRef.get().onResponce(mainObject, request);
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
             }
-        }else{
-            this.fragmentWeakRef.get().error();
         }
+//        else{
+//            this.fragmentWeakRef.get().error();
+//        }
     }
 
 

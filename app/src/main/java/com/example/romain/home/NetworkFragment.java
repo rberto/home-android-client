@@ -114,9 +114,9 @@ public class NetworkFragment extends MyFragment {
     public void refresh(){
         super.refresh();
         mProgress.setVisibility(View.VISIBLE);
-        getRequest request = new getRequest(this);
-        asyncTaskWeakRef = new WeakReference<getRequest>(request);
-        request.execute("http://" + ip + ":8889/api?user=romain&password=azerty&datatype=network");
+//        getRequest request = new getRequest(this);
+//        asyncTaskWeakRef = new WeakReference<getRequest>(request);
+//        request.execute("http://" + ip + ":8889/api?user=romain&password=azerty&datatype=network");
     }
 
     public void updateUI(JSONObject json) throws JSONException {

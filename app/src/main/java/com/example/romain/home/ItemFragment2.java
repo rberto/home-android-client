@@ -27,7 +27,7 @@ import java.util.List;
  * Activities containing this fragment MUST implement the {@link OnFragmentInteractionListener}
  * interface.
  */
-public class ItemFragment extends Fragment implements AbsListView.OnItemClickListener {
+public class ItemFragment2 extends Fragment implements AbsListView.OnItemClickListener {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -54,8 +54,8 @@ public class ItemFragment extends Fragment implements AbsListView.OnItemClickLis
     private JSONObject json;
 
     // TODO: Rename and change types of parameters
-    public static ItemFragment newInstance(JSONObject json) {
-        ItemFragment fragment = new ItemFragment();
+    public static ItemFragment2 newInstance(JSONObject json) {
+        ItemFragment2 fragment = new ItemFragment2();
         Bundle args = new Bundle();
         //args.putString(ARG_PARAM1, param1);
         //args.putString(ARG_PARAM2, param2);
@@ -68,7 +68,7 @@ public class ItemFragment extends Fragment implements AbsListView.OnItemClickLis
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public ItemFragment() {
+    public ItemFragment2() {
     }
 
     @Override

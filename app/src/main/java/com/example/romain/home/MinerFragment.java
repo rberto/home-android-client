@@ -120,9 +120,9 @@ public class MinerFragment extends MyFragment implements View.OnClickListener{
         merrorratetext.setText("--");
         asicTemp2.setText("--");
         asicTemp1.setText("--");
-        getRequest request = new getRequest(this);
-        this.asyncTaskWeakRef = new WeakReference<getRequest>(request);
-        request.execute("http://" + ip + ":8889/api?user=romain&password=azerty&datatype=miner");
+//        getRequest request = new getRequest(this);
+//        this.asyncTaskWeakRef = new WeakReference<getRequest>(request);
+//        request.execute("http://" + ip + ":8889/api?user=romain&password=azerty&datatype=miner");
     }
 
     public void updateUI(JSONObject json) throws JSONException{

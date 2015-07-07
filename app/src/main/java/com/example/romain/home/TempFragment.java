@@ -98,9 +98,9 @@ public class TempFragment extends MyFragment implements OnChartValueSelectedList
         mOutsidePressure.setText("--");
         mInsidePressure.setText("--");
         lcTempLineChart.clear();
-        getRequest request = new getRequest(this);
-        asyncTaskWeakRef = new WeakReference<getRequest>(request);
-        request.execute("http://" + ip + ":8889/api?user=romain&password=azerty&datatype=weather");
+//        getRequest request = new getRequest(this);
+//        asyncTaskWeakRef = new WeakReference<getRequest>(request);
+//        request.execute("http://" + ip + ":8889/api?user=romain&password=azerty&datatype=weather");
     }
 
     public void updateUI(JSONObject json) throws JSONException {
