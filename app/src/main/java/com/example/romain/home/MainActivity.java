@@ -15,13 +15,14 @@ import android.view.ViewGroup;
 
 import com.example.romain.home.model.RequestSender;
 import com.example.romain.home.model.Requests;
+import com.example.romain.home.model.factories.DataFactory;
 import com.example.romain.home.views.ItemFragment;
 
 import org.json.JSONObject;
 
 
 public class MainActivity extends Activity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks, MinerFragment.OnFragmentInteractionListener, RequestReciever{
+        implements NavigationDrawerFragment.NavigationDrawerCallbacks, ItemFragment.OnFragmentInteractionListener, RequestReciever{
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
@@ -134,21 +135,12 @@ public class MainActivity extends Activity
     }
 
     @Override
-    public void onFragmentInteraction(JSONObject json) {
-        FragmentManager fragmentManager = getFragmentManager();
-        FragmentTransaction trans = fragmentManager.beginTransaction();
-        trans.replace(R.id.container, ItemFragment2.newInstance(json));
-        trans.addToBackStack(null);
-        trans.commit();
-    }
-
-    @Override
     public void onResponce(JSONObject responce, Requests request) {
         FragmentManager fragmentManager = getFragmentManager();
 
         switch (request){
             case SUMMARY:
-                current_fragment = ItemFragment.newInstance();
+                current_fragment = ItemFragment.newInstance(DataFactory.createSummary(responce));
                 break;
             default:
                 break;
@@ -162,6 +154,11 @@ public class MainActivity extends Activity
     @Override
     public Activity getAct() {
         return this;
+    }
+
+    @Override
+    public void onFragmentInteraction(String id) {
+
     }
 
 

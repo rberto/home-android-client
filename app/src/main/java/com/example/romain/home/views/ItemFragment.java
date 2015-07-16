@@ -14,7 +14,12 @@ import android.widget.TextView;
 
 import com.example.romain.home.R;
 
+import com.example.romain.home.model.Summary;
+import com.example.romain.home.model.factories.ItemsFactory;
 import com.example.romain.home.views.dummy.DummyContent;
+import com.example.romain.home.views.items.SummaryItem;
+
+import org.json.JSONObject;
 
 /**
  * A fragment representing a list of Items.
@@ -29,11 +34,10 @@ public class ItemFragment extends Fragment implements AbsListView.OnItemClickLis
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String ARG_SUMMARY = "summary";
 
     // TODO: Rename and change types of parameters
-    private String mParam1;
+    private Summary summary;
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
@@ -50,11 +54,10 @@ public class ItemFragment extends Fragment implements AbsListView.OnItemClickLis
     private ListAdapter mAdapter;
 
     // TODO: Rename and change types of parameters
-    public static ItemFragment newInstance(String param1, String param2) {
+    public static ItemFragment newInstance(Summary summary) {
         ItemFragment fragment = new ItemFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putSerializable(ARG_SUMMARY, summary);
         fragment.setArguments(args);
         return fragment;
     }
@@ -71,13 +74,10 @@ public class ItemFragment extends Fragment implements AbsListView.OnItemClickLis
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            summary = (Summary) getArguments().getSerializable(ARG_SUMMARY);
         }
 
-        // TODO: Change Adapter to display your content
-        mAdapter = new ArrayAdapter<DummyContent.DummyItem>(getActivity(),
-                android.R.layout.simple_list_item_1, android.R.id.text1, DummyContent.ITEMS);
+        mAdapter = new SummaryItemArrayAdapter(getActivity(), ItemsFactory.createSummaryItems(summary));
     }
 
     @Override
