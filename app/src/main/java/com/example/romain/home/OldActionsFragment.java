@@ -1,8 +1,8 @@
-package com.example.romain.home.views;
+package com.example.romain.home;
 
 import android.app.Activity;
-import android.os.Bundle;
 import android.app.Fragment;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,16 +12,11 @@ import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 
-import com.example.romain.home.R;
+import com.example.romain.home.dummy.DummyContent;
 
-import com.example.romain.home.model.Summary;
-import com.example.romain.home.model.factories.DataFactory;
-import com.example.romain.home.model.factories.ItemsFactory;
-import com.example.romain.home.views.dummy.DummyContent;
-import com.example.romain.home.views.items.SummaryItem;
-
-import org.json.JSONArray;
 import org.json.JSONObject;
+
+import java.util.List;
 
 /**
  * A fragment representing a list of Items.
@@ -32,14 +27,15 @@ import org.json.JSONObject;
  * Activities containing this fragment MUST implement the {@link OnFragmentInteractionListener}
  * interface.
  */
-public class ItemFragment extends Fragment implements AbsListView.OnItemClickListener {
+public class OldActionsFragment extends Fragment implements AbsListView.OnItemClickListener {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_SUMMARY = "summary";
+    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PARAM2 = "param2";
 
     // TODO: Rename and change types of parameters
-    private JSONArray summary;
+    private String mParam1;
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
@@ -55,13 +51,16 @@ public class ItemFragment extends Fragment implements AbsListView.OnItemClickLis
      */
     private ListAdapter mAdapter;
 
+    private JSONObject json;
+
     // TODO: Rename and change types of parameters
-    public static ItemFragment newInstance(JSONArray summary) {
-        ItemFragment fragment = new ItemFragment();
+    public static OldActionsFragment newInstance(JSONObject json) {
+        OldActionsFragment fragment = new OldActionsFragment();
         Bundle args = new Bundle();
-        //args.putSerializable(ARG_SUMMARY, summary);
-        fragment.summary = summary;
-        fragment.setArguments(args);
+        //args.putString(ARG_PARAM1, param1);
+        //args.putString(ARG_PARAM2, param2);
+        fragment.json = json;
+        //fragment.setArguments(args);
         return fragment;
     }
 
@@ -69,7 +68,7 @@ public class ItemFragment extends Fragment implements AbsListView.OnItemClickLis
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public ItemFragment() {
+    public OldActionsFragment() {
     }
 
     @Override
@@ -77,16 +76,20 @@ public class ItemFragment extends Fragment implements AbsListView.OnItemClickLis
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
-            //summary = (Summary) getArguments().getSerializable(ARG_SUMMARY);
+            mParam1 = getArguments().getString(ARG_PARAM1);
+            mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
-        mAdapter = new SummaryItemArrayAdapter(getActivity(), DataFactory.builItems(summary));
+        // TODO: Change Adapter to display your content
+        List<Actions> list = Actions.create(json);
+        mAdapter = new ArrayAdapter<Actions>(getActivity(),
+                android.R.layout.simple_list_item_1, list);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_item3, container, false);
+        View view = inflater.inflate(R.layout.fragment_item2, container, false);
 
         // Set the adapter
         mListView = (AbsListView) view.findViewById(android.R.id.list);
@@ -101,12 +104,12 @@ public class ItemFragment extends Fragment implements AbsListView.OnItemClickLis
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        try {
+        /*try {
             mListener = (OnFragmentInteractionListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
                     + " must implement OnFragmentInteractionListener");
-        }
+        }*/
     }
 
     @Override
@@ -114,6 +117,7 @@ public class ItemFragment extends Fragment implements AbsListView.OnItemClickLis
         super.onDetach();
         mListener = null;
     }
+
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

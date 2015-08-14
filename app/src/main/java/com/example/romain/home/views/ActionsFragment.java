@@ -1,8 +1,8 @@
-package com.example.romain.home;
+package com.example.romain.home.views;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.os.Bundle;
+import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,11 +12,15 @@ import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 
-import com.example.romain.home.dummy.DummyContent;
+import com.example.romain.home.R;
+import com.example.romain.home.getRequest;
+import com.example.romain.home.model.RequestSender;
+import com.example.romain.home.model.Requests;
+import com.example.romain.home.model.factories.DataFactory;
+import com.example.romain.home.views.dummy.DummyContent;
+import com.example.romain.home.views.items.ActionsItem;
 
-import org.json.JSONObject;
-
-import java.util.List;
+import org.json.JSONArray;
 
 /**
  * A fragment representing a list of Items.
@@ -24,7 +28,7 @@ import java.util.List;
  * Large screen devices (such as tablets) are supported by replacing the ListView
  * with a GridView.
  * <p/>
- * Activities containing this fragment MUST implement the {@link OnFragmentInteractionListener}
+ * Activities containing this fragment MUST implement the {@link OnActionInteractionListener}
  * interface.
  */
 public class ActionsFragment extends Fragment implements AbsListView.OnItemClickListener {
@@ -32,13 +36,11 @@ public class ActionsFragment extends Fragment implements AbsListView.OnItemClick
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
     // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private JSONArray actions;
 
-    private OnFragmentInteractionListener mListener;
+    private OnActionInteractionListener mListener;
 
     /**
      * The fragment's ListView/GridView.
@@ -51,16 +53,13 @@ public class ActionsFragment extends Fragment implements AbsListView.OnItemClick
      */
     private ListAdapter mAdapter;
 
-    private JSONObject json;
-
     // TODO: Rename and change types of parameters
-    public static ActionsFragment newInstance(JSONObject json) {
+    public static ActionsFragment newInstance(JSONArray actions) {
         ActionsFragment fragment = new ActionsFragment();
         Bundle args = new Bundle();
-        //args.putString(ARG_PARAM1, param1);
-        //args.putString(ARG_PARAM2, param2);
-        fragment.json = json;
-        //fragment.setArguments(args);
+//        args.putString(ARG_PARAM1, actions);
+        fragment.actions = actions;
+        fragment.setArguments(args);
         return fragment;
     }
 
@@ -76,20 +75,18 @@ public class ActionsFragment extends Fragment implements AbsListView.OnItemClick
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+//            actions = getArguments().getString(ARG_PARAM1);
         }
 
         // TODO: Change Adapter to display your content
-        List<Actions> list = Actions.create(json);
-        mAdapter = new ArrayAdapter<Actions>(getActivity(),
-                android.R.layout.simple_list_item_1, list);
+        mAdapter = new ActionItemArrayAdapter(getActivity(), DataFactory.builActionsItems(actions));
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_item2, container, false);
+        View view = inflater.inflate(R.layout.fragment_actions, container, false);
 
         // Set the adapter
         mListView = (AbsListView) view.findViewById(android.R.id.list);
@@ -104,12 +101,12 @@ public class ActionsFragment extends Fragment implements AbsListView.OnItemClick
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        /*try {
-            mListener = (OnFragmentInteractionListener) activity;
+        try {
+            mListener = (OnActionInteractionListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
                     + " must implement OnFragmentInteractionListener");
-        }*/
+        }
     }
 
     @Override
@@ -118,13 +115,13 @@ public class ActionsFragment extends Fragment implements AbsListView.OnItemClick
         mListener = null;
     }
 
-
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        ActionsItem ac = (ActionsItem) mListView.getItemAtPosition(position);
         if (null != mListener) {
             // Notify the active callbacks interface (the activity, if the
             // fragment is attached to one) that an item has been selected.
-            mListener.onFragmentInteraction(DummyContent.ITEMS.get(position).id);
+            mListener.onActionInteraction(ac.getTitle());
         }
     }
 
@@ -151,9 +148,9 @@ public class ActionsFragment extends Fragment implements AbsListView.OnItemClick
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnFragmentInteractionListener {
+    public interface OnActionInteractionListener {
         // TODO: Update argument type and name
-        public void onFragmentInteraction(String id);
+        public void onActionInteraction(String id);
     }
 
 }

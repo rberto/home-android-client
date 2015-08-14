@@ -2,10 +2,15 @@ package com.example.romain.home.model.factories;
 
 import com.example.romain.home.model.Summary;
 import com.example.romain.home.model.SummaryKeys;
+import com.example.romain.home.views.items.ActionsItem;
 import com.example.romain.home.views.items.SummaryItem;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by romain on 07/07/15.
@@ -25,6 +30,59 @@ public class DataFactory {
             return DEFAULTVALUE;
         }
     }
+
+    public static String getValue(JSONObject json, String key){
+        if (json.has(key)){
+            try {
+                return json.getString(key);
+            } catch (JSONException e) {
+                return DEFAULTVALUE;
+            }
+        }else {
+            return DEFAULTVALUE;
+        }
+    }
+
+    public static List<SummaryItem> builItems(JSONArray array){
+        List<SummaryItem> result = new ArrayList<SummaryItem>();
+        for (int i = 0; i < array.length(); i++){
+            try {
+                result.add(buidSummaryItem(array.getJSONObject(i)));
+            } catch (JSONException e) {
+                e.printStackTrace();
+                continue;
+            }
+        }
+        return result;
+    }
+
+    public static SummaryItem buidSummaryItem(JSONObject json){
+        String title = getValue(json, "title");
+        String value = getValue(json, "value");
+        String avg = getValue(json, "avg");
+        String unit = getValue(json, "unit");
+        return new SummaryItem(title, value, avg, unit);
+    }
+
+    public static ActionsItem buidActionsItem(JSONObject json){
+        String title = getValue(json, "title");
+        String description = getValue(json, "description");
+        return new ActionsItem(title, description);
+    }
+
+    public static List<ActionsItem> builActionsItems(JSONArray array){
+        List<ActionsItem> result = new ArrayList<ActionsItem>();
+        for (int i = 0; i < array.length(); i++){
+            try {
+                result.add(buidActionsItem(array.getJSONObject(i)));
+            } catch (JSONException e) {
+                e.printStackTrace();
+                continue;
+            }
+        }
+        return result;
+    }
+
 
     public static Summary createSummary(JSONObject json){
         Summary sum = new Summary();

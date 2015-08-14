@@ -24,6 +24,7 @@ public class RequestSender {
     private String user;
     private String address;
     private String port;
+    private String args;
 
     private RequestSender(){}
 
@@ -32,7 +33,11 @@ public class RequestSender {
     }
 
     private String buildUri(Requests request){
-        return "http://" + address + ":" + port + "/api?user=" + user + "&password=" + password + "&datatype=" + request.getKey();
+        String url = "http://" + address + ":" + port + "/api?user=" + user + "&password=" + password + "&datatype=" + request.getKey();
+        if (args != null){
+            url = url + "&name=" + args;
+        }
+        return url;
     }
 
     public String sendRequest(Requests request){
@@ -40,7 +45,10 @@ public class RequestSender {
         HttpResponse response;
         String responseString = null;
         try {
-            response = httpclient.execute(new HttpGet(buildUri(request)));
+            String url = buildUri(request);
+            assert url != null;
+            Log.i("HOME", url);
+            response = httpclient.execute(new HttpGet(url));
             Log.i("HOME", "executed");
             StatusLine statusLine = response.getStatusLine();
             Log.i("HOME", "statusline read");
@@ -104,5 +112,9 @@ public class RequestSender {
 
     public void setPort(String port) {
         this.port = port;
+    }
+
+    public void setArgs(String args) {
+        this.args = args;
     }
 }

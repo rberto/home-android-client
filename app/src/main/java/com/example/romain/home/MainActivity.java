@@ -4,7 +4,6 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.view.LayoutInflater;
@@ -13,16 +12,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.romain.home.model.RequestSender;
 import com.example.romain.home.model.Requests;
-import com.example.romain.home.model.factories.DataFactory;
+import com.example.romain.home.views.ActionsFragment;
 import com.example.romain.home.views.ItemFragment;
+import com.example.romain.home.views.items.ActionsItem;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 
 public class MainActivity extends Activity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks, ItemFragment.OnFragmentInteractionListener, RequestReciever{
+        implements NavigationDrawerFragment.NavigationDrawerCallbacks, ItemFragment.OnFragmentInteractionListener, RequestReciever, ActionsFragment.OnActionInteractionListener{
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
@@ -49,10 +49,6 @@ public class MainActivity extends Activity
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
-        RequestSender.getInstance().setAddress("192.168.1.92");
-        RequestSender.getInstance().setPassword("azerty");
-        RequestSender.getInstance().setPort("8889");
-        RequestSender.getInstance().setUser("romain");
     }
 
     @Override
@@ -73,8 +69,10 @@ public class MainActivity extends Activity
                 current_fragment = NetworkFragment.newInstance();
                 break;
             case 3:
-                current_fragment = new ActionFragment();
-                current_fragment = ActionFragment.newInstance();
+                getRequest request1 = new getRequest(this);
+                request1.execute(Requests.LIST_ACTIONS);
+//                current_fragment = new ActionFragment();
+//                current_fragment = ActionFragment.newInstance();
                 break;
         }
 
@@ -140,8 +138,18 @@ public class MainActivity extends Activity
 
         switch (request){
             case SUMMARY:
-                current_fragment = ItemFragment.newInstance(DataFactory.createSummary(responce));
+                try {
+                    current_fragment = ItemFragment.newInstance(responce.getJSONArray("data"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
                 break;
+            case LIST_ACTIONS:
+                try {
+                    current_fragment = ActionsFragment.newInstance(responce.getJSONArray("data"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             default:
                 break;
         }
@@ -159,6 +167,13 @@ public class MainActivity extends Activity
     @Override
     public void onFragmentInteraction(String id) {
 
+    }
+
+    @Override
+    public void onActionInteraction(String id) {
+        getRequest r = new getRequest(this);
+        r.setArgs(id);
+        r.execute(Requests.SEND_ACTION);
     }
 
 

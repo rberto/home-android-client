@@ -24,7 +24,7 @@ public class ItemsFactory {
     }
 
     public static SummaryItem createOutsideTempItem(Summary summary){
-        return new SummaryItem("Out Press", summary.getLastOutsideTemperature(), summary.getAvgOutsideTemperature(), "mPha");
+        return new SummaryItem("Out Temp", summary.getLastOutsideTemperature(), summary.getAvgOutsideTemperature(), "°C");
     }
 
     public static SummaryItem createHashrateItem(Summary summary){
