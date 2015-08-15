@@ -11,6 +11,7 @@ public enum Requests {
     DATA("data");
 
     private String key;
+    private String[] args;
 
     Requests(String key) {
         this.key = key;
@@ -18,5 +19,13 @@ public enum Requests {
 
     public String getKey() {
         return key;
+    }
+
+    public String[] getArgs() {
+        return args;
+    }
+
+    public void setArgs(String[] args) {
+        this.args = args;
     }
 }

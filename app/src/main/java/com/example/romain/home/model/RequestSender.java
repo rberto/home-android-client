@@ -24,7 +24,6 @@ public class RequestSender {
     private String user;
     private String address;
     private String port;
-    private String args;
 
     private RequestSender(){}
 
@@ -34,8 +33,9 @@ public class RequestSender {
 
     private String buildUri(Requests request){
         String url = "http://" + address + ":" + port + "/api?user=" + user + "&password=" + password + "&datatype=" + request.getKey();
-        if (args != null){
-            url = url + "&name=" + args;
+        if (request.getArgs() != null){
+            for (String arg : request.getArgs())
+            url = url + "&name=" + arg;
         }
         return url;
     }
@@ -114,7 +114,4 @@ public class RequestSender {
         this.port = port;
     }
 
-    public void setArgs(String args) {
-        this.args = args;
-    }
 }

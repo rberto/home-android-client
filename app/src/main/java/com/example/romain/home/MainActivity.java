@@ -2,6 +2,7 @@ package com.example.romain.home;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.DownloadManager;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.os.Bundle;
@@ -172,8 +173,9 @@ public class MainActivity extends Activity
     @Override
     public void onActionInteraction(String id) {
         getRequest r = new getRequest(this);
-        r.setArgs(id);
-        r.execute(Requests.SEND_ACTION);
+        Requests re = Requests.SEND_ACTION;
+        re.setArgs(new String[]{id});
+        r.execute(re);
     }
 
 

@@ -22,7 +22,6 @@ public class getRequest extends AsyncTask<Requests, Integer, String> {
     private Context mContext;
     private WeakReference<RequestReciever> fragmentWeakRef;
     private Requests request;
-    private String args;
 
     public getRequest(RequestReciever frag){
         this.fragmentWeakRef = new WeakReference<RequestReciever>(frag);
@@ -46,7 +45,6 @@ public class getRequest extends AsyncTask<Requests, Integer, String> {
         RequestSender.getInstance().setPassword("azerty");
         RequestSender.getInstance().setPort("8889");
         RequestSender.getInstance().setUser("romain");
-        RequestSender.getInstance().setArgs(args);
         return RequestSender.getInstance().sendRequest(request);
     }
 
@@ -74,11 +72,7 @@ public class getRequest extends AsyncTask<Requests, Integer, String> {
 //            this.fragmentWeakRef.get().error();
 //        }
     }
-
-    public void setArgs(String args) {
-        this.args = args;
-    }
-
+    
 
         /*String p = null;
 
