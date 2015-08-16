@@ -57,11 +57,12 @@ public class DataFactory {
     }
 
     public static SummaryItem buidSummaryItem(JSONObject json){
+        String key = getValue(json, "key");
         String title = getValue(json, "title");
         String value = getValue(json, "value");
         String avg = getValue(json, "avg");
         String unit = getValue(json, "unit");
-        return new SummaryItem(title, value, avg, unit);
+        return new SummaryItem(key, title, value, avg, unit);
     }
 
     public static ActionsItem buidActionsItem(JSONObject json){

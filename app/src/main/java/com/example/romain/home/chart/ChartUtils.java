@@ -45,4 +45,30 @@ public class ChartUtils {
         }
         return new LineData(xVals, dataSets);
     }
+
+    public static LineData getLineData(JSONArray array, String title, int color){
+        ArrayList<String> xVals = new ArrayList<String>();
+        ArrayList<Entry> linedata = new ArrayList<Entry>();
+        ArrayList<LineDataSet> dataSets = new ArrayList<LineDataSet>();
+
+
+        for (int i = 0; i < array.length(); i++) {
+            String date = null;
+            try {
+                date = array.getJSONArray(i).getString(0);
+                xVals.add(date);
+                Entry en = new Entry(Float.valueOf(array.getJSONArray(i).getString(1)), i);
+                linedata.add(en);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        LineDataSet set = new LineDataSet(linedata, title);
+        //setinteriors.enableDashedLine(1,0,0);
+        set.setDrawCircles(false);
+        set.setColor(color);
+        set.setLineWidth(2);
+        dataSets.add(set);
+        return new LineData(xVals, dataSets);
+    }
 }

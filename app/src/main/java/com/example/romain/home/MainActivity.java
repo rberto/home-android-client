@@ -23,7 +23,7 @@ import org.json.JSONObject;
 
 
 public class MainActivity extends Activity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks, ItemFragment.OnFragmentInteractionListener, RequestReciever, ActionsFragment.OnActionInteractionListener{
+        implements NavigationDrawerFragment.NavigationDrawerCallbacks, ItemFragment.OnFragmentInteractionListener, RequestReciever, ActionsFragment.OnActionInteractionListener, FragmentManager.OnBackStackChangedListener{
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
@@ -50,6 +50,7 @@ public class MainActivity extends Activity
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
+        getFragmentManager().addOnBackStackChangedListener(this);
     }
 
     @Override
@@ -151,11 +152,17 @@ public class MainActivity extends Activity
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+            case DATA:
+                try {
+                    current_fragment = ChartFragment.newInstance(responce.getJSONArray("data"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             default:
                 break;
         }
         fragmentManager.beginTransaction()
-                .replace(R.id.container, current_fragment)
+                .replace(R.id.container, current_fragment).addToBackStack("tag")
                 .commit();
 
     }
@@ -167,7 +174,10 @@ public class MainActivity extends Activity
 
     @Override
     public void onFragmentInteraction(String id) {
-
+        getRequest r = new getRequest(this);
+        Requests re = Requests.DATA;
+        re.setArgs(new String[]{id});
+        r.execute(re);
     }
 
     @Override
@@ -176,6 +186,10 @@ public class MainActivity extends Activity
         Requests re = Requests.SEND_ACTION;
         re.setArgs(new String[]{id});
         r.execute(re);
+    }
+
+    @Override
+    public void onBackStackChanged() {
     }
 
 

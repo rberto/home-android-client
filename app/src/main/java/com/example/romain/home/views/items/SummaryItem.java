@@ -5,16 +5,26 @@ package com.example.romain.home.views.items;
  */
 public class SummaryItem {
 
+    private String key;
     private String title;
     private String value;
     private String avgValue;
     private String unit;
 
-    public SummaryItem(String title, String value, String avgValue, String unit) {
+    public SummaryItem(String key, String title, String value, String avgValue, String unit) {
+        this.key = key;
         this.title = title;
         this.value = value;
         this.avgValue = avgValue;
         this.unit = unit;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
     }
 
     public String getTitle() {

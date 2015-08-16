@@ -23,6 +23,8 @@ import com.example.romain.home.views.items.SummaryItem;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.List;
+
 /**
  * A fragment representing a list of Items.
  * <p/>
@@ -79,8 +81,8 @@ public class ItemFragment extends Fragment implements AbsListView.OnItemClickLis
         if (getArguments() != null) {
             //summary = (Summary) getArguments().getSerializable(ARG_SUMMARY);
         }
-
-        mAdapter = new SummaryItemArrayAdapter(getActivity(), DataFactory.builItems(summary));
+        List<SummaryItem> list = DataFactory.builItems(summary);
+        mAdapter = new SummaryItemArrayAdapter(getActivity(), list);
     }
 
     @Override
@@ -117,10 +119,13 @@ public class ItemFragment extends Fragment implements AbsListView.OnItemClickLis
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//        SummaryItem item = (SummaryItem) parent.getItemAtPosition(position);
+        SummaryItem item = (SummaryItem) mAdapter.getItem(position);
+//         mListView.getItemAtPosition(position);
         if (null != mListener) {
             // Notify the active callbacks interface (the activity, if the
             // fragment is attached to one) that an item has been selected.
-            mListener.onFragmentInteraction(DummyContent.ITEMS.get(position).id);
+            mListener.onFragmentInteraction(item.getKey());
         }
     }
 
