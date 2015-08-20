@@ -37,11 +37,11 @@ public class getRequest extends AsyncTask<Requests, Integer, String> {
     @Override
     protected String doInBackground(Requests... r) {
         request = r[0];
-        if (!isOnline()){
-            throw new IllegalStateException();
-        }
-        RequestSender.getInstance().setAddress("192.168.1.92");
-//        RequestSender.getInstance().setAddress("212.194.111.127");
+//        if (!isOnline()){
+//            throw new IllegalStateException();
+//        }
+//        RequestSender.getInstance().setAddress("192.168.1.92");
+        RequestSender.getInstance().setAddress("212.194.111.127");
         RequestSender.getInstance().setPassword("azerty");
         RequestSender.getInstance().setPort("8889");
         RequestSender.getInstance().setUser("romain");

@@ -3,6 +3,8 @@ package com.example.romain.home.views;
 import android.app.Activity;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.os.Parcelable;
+import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +16,8 @@ import android.widget.TextView;
 
 import com.example.romain.home.R;
 
+import com.example.romain.home.RequestReciever;
+import com.example.romain.home.model.Requests;
 import com.example.romain.home.model.Summary;
 import com.example.romain.home.model.factories.DataFactory;
 import com.example.romain.home.model.factories.ItemsFactory;
@@ -21,9 +25,13 @@ import com.example.romain.home.views.dummy.DummyContent;
 import com.example.romain.home.views.items.SummaryItem;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import static com.example.romain.home.model.factories.DataFactory.builItems;
 
 /**
  * A fragment representing a list of Items.
@@ -34,7 +42,7 @@ import java.util.List;
  * Activities containing this fragment MUST implement the {@link OnFragmentInteractionListener}
  * interface.
  */
-public class ItemFragment extends Fragment implements AbsListView.OnItemClickListener {
+public class ItemFragment extends Fragment implements AbsListView.OnItemClickListener, RequestReciever {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -43,6 +51,8 @@ public class ItemFragment extends Fragment implements AbsListView.OnItemClickLis
     // TODO: Rename and change types of parameters
     private JSONArray summary;
     private String mParam2;
+
+    private ArrayList<SummaryItem> items;
 
     private OnFragmentInteractionListener mListener;
 
@@ -58,11 +68,11 @@ public class ItemFragment extends Fragment implements AbsListView.OnItemClickLis
     private ListAdapter mAdapter;
 
     // TODO: Rename and change types of parameters
-    public static ItemFragment newInstance(JSONArray summary) {
+    public static ItemFragment newInstance(/*JSONArray summary*/) {
         ItemFragment fragment = new ItemFragment();
         Bundle args = new Bundle();
         //args.putSerializable(ARG_SUMMARY, summary);
-        fragment.summary = summary;
+        //fragment.summary = summary;
         fragment.setArguments(args);
         return fragment;
     }
@@ -78,25 +88,20 @@ public class ItemFragment extends Fragment implements AbsListView.OnItemClickLis
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (getArguments() != null) {
-            //summary = (Summary) getArguments().getSerializable(ARG_SUMMARY);
+        if (getArguments().getParcelableArray(ARG_SUMMARY) != null) {
+            items = new ArrayList<SummaryItem>();
+            for (Parcelable item : getArguments().getParcelableArray(ARG_SUMMARY)){
+                items.add((SummaryItem)item);
+            }
         }
-        List<SummaryItem> list = DataFactory.builItems(summary);
-        mAdapter = new SummaryItemArrayAdapter(getActivity(), list);
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_item3, container, false);
-
-        // Set the adapter
-        mListView = (AbsListView) view.findViewById(android.R.id.list);
-        ((AdapterView<ListAdapter>) mListView).setAdapter(mAdapter);
-
-        // Set OnItemClickListener so we can be notified on item clicks
-        mListView.setOnItemClickListener(this);
-
+        view.findViewById(R.id.progressBar).setVisibility(View.VISIBLE);
         return view;
     }
 
@@ -108,6 +113,14 @@ public class ItemFragment extends Fragment implements AbsListView.OnItemClickLis
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
                     + " must implement OnFragmentInteractionListener");
+        }
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        if (items != null){
+            updateList();
         }
     }
 
@@ -140,6 +153,40 @@ public class ItemFragment extends Fragment implements AbsListView.OnItemClickLis
         if (emptyView instanceof TextView) {
             ((TextView) emptyView).setText(emptyText);
         }
+    }
+
+
+    public void updateList(){
+        getActivity().findViewById(R.id.progressBar).setVisibility(View.INVISIBLE);
+
+        this.getArguments().putParcelableArray(ARG_SUMMARY, items.toArray(new Parcelable[items.size()]));
+        mAdapter = new SummaryItemArrayAdapter(getActivity(), items);
+        mListView = (AbsListView) getActivity().findViewById(android.R.id.list);
+        ((AdapterView<ListAdapter>) mListView).setAdapter(mAdapter);
+
+        // Set OnItemClickListener so we can be notified on item clicks
+        mListView.setOnItemClickListener(this);
+    }
+
+    @Override
+    public void onResponce(JSONObject resonce, Requests request) {
+
+        getActivity().findViewById(R.id.progressBar).setVisibility(View.INVISIBLE);
+
+        try {
+            summary = resonce.getJSONArray("data");
+            items = (ArrayList<SummaryItem>) builItems(summary);
+            updateList();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        //fragment.summary = summary;
+
+    }
+
+    @Override
+    public Activity getAct() {
+        return getActivity();
     }
 
     /**

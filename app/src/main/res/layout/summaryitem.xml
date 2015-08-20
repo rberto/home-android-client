@@ -15,8 +15,7 @@
         android:textStyle="bold"
         android:textColor="#669900"
         android:layout_alignParentBottom="false"
-        android:layout_alignBottom="@+id/unit"
-        android:layout_toRightOf="@+id/unit" />
+        android:layout_below="@+id/unit" />
 
     <TextView
         android:layout_width="wrap_content"

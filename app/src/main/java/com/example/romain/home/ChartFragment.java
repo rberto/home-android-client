@@ -10,10 +10,15 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.romain.home.chart.ChartUtils;
+import com.example.romain.home.model.Requests;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.LineData;
 
 import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 import static android.graphics.Color.DKGRAY;
 import static android.graphics.Color.GRAY;
@@ -27,7 +32,7 @@ import static android.graphics.Color.GRAY;
  * Use the {@link ChartFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ChartFragment extends Fragment {
+public class ChartFragment extends Fragment implements RequestReciever{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -45,10 +50,10 @@ public class ChartFragment extends Fragment {
      * @return A new instance of fragment ChartFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static ChartFragment newInstance(JSONArray param1) {
+    public static ChartFragment newInstance(/*JSONArray param1*/) {
         ChartFragment fragment = new ChartFragment();
         Bundle args = new Bundle();
-        fragment.mParam1 = param1;
+//        fragment.mParam1 = param1;
 //        args.putString(ARG_PARAM1, param1);
         fragment.setArguments(args);
         return fragment;
@@ -73,19 +78,19 @@ public class ChartFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_chart, container, false);
     }
 
-    @Override
-    public void onResume(){
-        super.onResume();
-        LineData data = ChartUtils.getLineData(mParam1, "title", Color.BLUE);
-        LineChart chart = (LineChart) getActivity().findViewById(R.id.chart);
-        chart.setData(data);
-    }
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
         }
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        LineChart chart = (LineChart) getActivity().findViewById(R.id.chart);
+        chart.setData(new LineData(new ArrayList<String>()));
     }
 
     @Override
@@ -103,6 +108,28 @@ public class ChartFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void onResponce(JSONObject resonce, Requests request) {
+
+        getActivity().findViewById(R.id.progressBar).setVisibility(View.INVISIBLE);
+
+        try {
+            mParam1 = resonce.getJSONArray("data");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        LineData data = ChartUtils.getLineData(mParam1, "title", Color.BLUE);
+        LineChart chart = (LineChart) getActivity().findViewById(R.id.chart);
+        chart.setData(data);
+        chart.animateY(0);
+    }
+
+    @Override
+    public Activity getAct() {
+        return getActivity();
     }
 
     /**

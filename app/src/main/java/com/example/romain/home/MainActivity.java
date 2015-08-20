@@ -23,7 +23,7 @@ import org.json.JSONObject;
 
 
 public class MainActivity extends Activity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks, ItemFragment.OnFragmentInteractionListener, RequestReciever, ActionsFragment.OnActionInteractionListener, FragmentManager.OnBackStackChangedListener{
+        implements NavigationDrawerFragment.NavigationDrawerCallbacks, ItemFragment.OnFragmentInteractionListener, ActionsFragment.OnActionInteractionListener, FragmentManager.OnBackStackChangedListener{
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
@@ -56,27 +56,23 @@ public class MainActivity extends Activity
     @Override
     public void onNavigationDrawerItemSelected(int position) {
         // update the main content by replacing fragments
+        FragmentManager fragmentManager = getFragmentManager();
 
         switch(position) {
             case 0:
-                getRequest request = new getRequest(this);
+                current_fragment = ItemFragment.newInstance();
+                getRequest request = new getRequest((ItemFragment)current_fragment);
                 request.execute(Requests.SUMMARY);
                 break;
             case 1:
-                current_fragment = new MinerFragment();
-                current_fragment = MinerFragment.newInstance();
-                break;
-            case 2:
-                current_fragment = new NetworkFragment();
-                current_fragment = NetworkFragment.newInstance();
-                break;
-            case 3:
-                getRequest request1 = new getRequest(this);
+                current_fragment = ActionsFragment.newInstance();
+                getRequest request1 = new getRequest((ActionsFragment)current_fragment);
                 request1.execute(Requests.LIST_ACTIONS);
-//                current_fragment = new ActionFragment();
-//                current_fragment = ActionFragment.newInstance();
                 break;
         }
+        fragmentManager.beginTransaction()
+                .replace(R.id.container, current_fragment).addToBackStack("tag")
+                .commit();
 
     }
 
@@ -87,12 +83,6 @@ public class MainActivity extends Activity
                 break;
             case 2:
                 mTitle = getString(R.string.title_section2);
-                break;
-            case 3:
-                mTitle = "NetWork";
-                break;
-            case 4:
-                mTitle = "Actions";
                 break;
         }
     }
@@ -135,54 +125,21 @@ public class MainActivity extends Activity
     }
 
     @Override
-    public void onResponce(JSONObject responce, Requests request) {
-        FragmentManager fragmentManager = getFragmentManager();
-
-        switch (request){
-            case SUMMARY:
-                try {
-                    current_fragment = ItemFragment.newInstance(responce.getJSONArray("data"));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                break;
-            case LIST_ACTIONS:
-                try {
-                    current_fragment = ActionsFragment.newInstance(responce.getJSONArray("data"));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            case DATA:
-                try {
-                    current_fragment = ChartFragment.newInstance(responce.getJSONArray("data"));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            default:
-                break;
-        }
-        fragmentManager.beginTransaction()
-                .replace(R.id.container, current_fragment).addToBackStack("tag")
-                .commit();
-
-    }
-
-    @Override
-    public Activity getAct() {
-        return this;
-    }
-
-    @Override
     public void onFragmentInteraction(String id) {
-        getRequest r = new getRequest(this);
+        FragmentManager fragmentManager = getFragmentManager();
+        current_fragment = ChartFragment.newInstance();
+        getRequest r = new getRequest((ChartFragment)current_fragment);
         Requests re = Requests.DATA;
         re.setArgs(new String[]{id});
         r.execute(re);
+        fragmentManager.beginTransaction()
+                .replace(R.id.container, current_fragment).addToBackStack("tag")
+                .commit();
     }
 
     @Override
     public void onActionInteraction(String id) {
-        getRequest r = new getRequest(this);
+        getRequest r = new getRequest((ActionsFragment)current_fragment);
         Requests re = Requests.SEND_ACTION;
         re.setArgs(new String[]{id});
         r.execute(re);
