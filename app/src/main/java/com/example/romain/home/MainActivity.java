@@ -61,12 +61,12 @@ public class MainActivity extends Activity
         switch(position) {
             case 0:
                 current_fragment = ItemFragment.newInstance();
-                getRequest request = new getRequest((ItemFragment)current_fragment);
+                getRequest request = new getRequest((ItemFragment)current_fragment, getApplicationContext());
                 request.execute(Requests.SUMMARY);
                 break;
             case 1:
                 current_fragment = ActionsFragment.newInstance();
-                getRequest request1 = new getRequest((ActionsFragment)current_fragment);
+                getRequest request1 = new getRequest((ActionsFragment)current_fragment, getApplicationContext());
                 request1.execute(Requests.LIST_ACTIONS);
                 break;
         }
@@ -128,7 +128,7 @@ public class MainActivity extends Activity
     public void onFragmentInteraction(String id) {
         FragmentManager fragmentManager = getFragmentManager();
         current_fragment = ChartFragment.newInstance();
-        getRequest r = new getRequest((ChartFragment)current_fragment);
+        getRequest r = new getRequest((ChartFragment)current_fragment, getApplicationContext());
         Requests re = Requests.DATA;
         re.setArgs(new String[]{id});
         r.execute(re);
@@ -139,7 +139,7 @@ public class MainActivity extends Activity
 
     @Override
     public void onActionInteraction(String id) {
-        getRequest r = new getRequest((ActionsFragment)current_fragment);
+        getRequest r = new getRequest((ActionsFragment)current_fragment, getApplicationContext());
         Requests re = Requests.SEND_ACTION;
         re.setArgs(new String[]{id});
         r.execute(re);

@@ -57,11 +57,26 @@ public class DataFactory {
     }
 
     public static SummaryItem buidSummaryItem(JSONObject json){
-        String key = getValue(json, "key");
-        String title = getValue(json, "title");
-        String value = getValue(json, "value");
-        String avg = getValue(json, "avg");
-        String unit = getValue(json, "unit");
+        String key = null;
+        String title = null;
+        String value = null;
+        String avg = null;
+        String unit = null;
+        if (!json.isNull("key")){
+            key = getValue(json, "key");
+        }
+        if (!json.isNull("title")){
+            title = getValue(json, "title");
+        }
+        if (!json.isNull("value")){
+            value = getValue(json, "value");
+        }
+        if (!json.isNull("avg")){
+            avg = getValue(json, "avg");
+        }
+        if (!json.isNull("unit")){
+            unit = getValue(json, "unit");
+        }
         return new SummaryItem(key, title, value, avg, unit);
     }
 

@@ -12,7 +12,10 @@ import android.view.ViewGroup;
 import com.example.romain.home.chart.ChartUtils;
 import com.example.romain.home.model.Requests;
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.data.DataSet;
+import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.interfaces.OnChartValueSelectedListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -32,7 +35,7 @@ import static android.graphics.Color.GRAY;
  * Use the {@link ChartFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ChartFragment extends Fragment implements RequestReciever{
+public class ChartFragment extends Fragment implements RequestReciever, OnChartValueSelectedListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -125,11 +128,47 @@ public class ChartFragment extends Fragment implements RequestReciever{
         LineChart chart = (LineChart) getActivity().findViewById(R.id.chart);
         chart.setData(data);
         chart.animateY(0);
+        chart.setOnChartValueSelectedListener(this);
+
     }
 
     @Override
     public Activity getAct() {
         return getActivity();
+    }
+
+    @Override
+    public void onValueSelected(Entry entry, int i) {
+/*
+        int index = entry.getXIndex();
+        Float selintemp = null;
+        Float selextemp = null;
+
+
+        for (int j = 0; j < 2; j++) {
+            DataSet<Entry> data = lcTempLineChart.getData().getDataSetByIndex(j);
+            if (data.getLabel() == "Inside Temp") {
+                selintemp = data.getYValForXIndex(index);
+            }
+            if (data.getLabel() == "Outside Temp") {
+                selextemp = data.getYValForXIndex(index);
+            }
+        }
+        // Could not use the following api because of a bug in getDataSetByLabel
+        //Float selintemp = lcTempLineChart.getYValue(index, "Inside Temp");
+        //Float selextemp = lcTempLineChart.getYValue(index, "Outside Temp");
+        String seltime = lcTempLineChart.getXValue(index);
+        mSelinTemp.setText(String.valueOf(selintemp));
+        mSeloutTemp.setText(String.valueOf(selextemp));
+
+
+        mSelTime.setText(seltime);
+*/
+    }
+
+    @Override
+    public void onNothingSelected() {
+
     }
 
     /**

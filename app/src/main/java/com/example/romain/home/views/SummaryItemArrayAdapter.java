@@ -34,12 +34,30 @@ public class SummaryItemArrayAdapter extends ArrayAdapter<SummaryItem>{
 
         SummaryItem item = getItem(position);
 
-        titleView.setText(item.getTitle());
-        valueView.setText(item.getValue());
-        unitView.setText(item.getUnit());
-        avgValueView.setText(item.getAvgValue());
-        avgUnitView.setText(item.getUnit());
-
+        if (item.getTitle() != null){
+            titleView.setText(item.getTitle());
+        }else {
+            titleView.setVisibility(View.INVISIBLE);
+        }
+        if (item.getValue() != null){
+            valueView.setText(item.getValue());
+        }else {
+            valueView.setVisibility(View.INVISIBLE);
+            unitView.setVisibility(View.INVISIBLE);
+        }
+        if (item.getUnit() != null){
+            unitView.setText(item.getUnit());
+            avgUnitView.setText(item.getUnit());
+        }else {
+            unitView.setText("");
+            avgUnitView.setText("");
+        }
+        if (item.getAvgValue() != null){
+            avgValueView.setText(item.getAvgValue());
+        }else{
+            avgValueView.setVisibility(View.INVISIBLE);
+            avgUnitView.setVisibility(View.INVISIBLE);
+        }
         return rowView;
     }
 }

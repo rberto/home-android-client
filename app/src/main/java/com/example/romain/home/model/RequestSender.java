@@ -1,6 +1,9 @@
 package com.example.romain.home.model;
 
+import android.content.Context;
 import android.util.Log;
+
+import com.example.romain.home.MyHttpClient;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -24,6 +27,7 @@ public class RequestSender {
     private String user;
     private String address;
     private String port;
+    private Context context;
 
     private RequestSender(){}
 
@@ -32,7 +36,7 @@ public class RequestSender {
     }
 
     private String buildUri(Requests request){
-        String url = "http://" + address + ":" + port + "/api?user=" + user + "&password=" + password + "&datatype=" + request.getKey();
+        String url = "https://" + address + ":" + port + "/api?user=" + user + "&password=" + password + "&datatype=" + request.getKey();
         if (request.getArgs() != null){
             for (String arg : request.getArgs())
             url = url + "&name=" + arg;
@@ -41,7 +45,7 @@ public class RequestSender {
     }
 
     public String sendRequest(Requests request){
-        HttpClient httpclient = new DefaultHttpClient();
+        HttpClient httpclient = new MyHttpClient(context);
         HttpResponse response;
         String responseString = null;
         try {
@@ -114,4 +118,7 @@ public class RequestSender {
         this.port = port;
     }
 
+    public void setContext(Context context) {
+        this.context = context;
+    }
 }
