@@ -101,7 +101,9 @@ public class ItemFragment extends Fragment implements AbsListView.OnItemClickLis
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_item3, container, false);
-        view.findViewById(R.id.progressBar).setVisibility(View.VISIBLE);
+        if (view.findViewById(R.id.progressBar) != null) {
+            view.findViewById(R.id.progressBar).setVisibility(View.VISIBLE);
+        }
         return view;
     }
 
@@ -157,7 +159,9 @@ public class ItemFragment extends Fragment implements AbsListView.OnItemClickLis
 
 
     public void updateList(){
-        getActivity().findViewById(R.id.progressBar).setVisibility(View.INVISIBLE);
+        if (getActivity() != null && getActivity().findViewById(R.id.progressBar) != null){
+            getActivity().findViewById(R.id.progressBar).setVisibility(View.INVISIBLE);
+        }
 
         this.getArguments().putParcelableArray(ARG_SUMMARY, items.toArray(new Parcelable[items.size()]));
         mAdapter = new SummaryItemArrayAdapter(getActivity(), items);
@@ -171,7 +175,9 @@ public class ItemFragment extends Fragment implements AbsListView.OnItemClickLis
     @Override
     public void onResponce(JSONObject resonce, Requests request) {
 
-        getActivity().findViewById(R.id.progressBar).setVisibility(View.INVISIBLE);
+        if (getActivity() != null && getActivity().findViewById(R.id.progressBar) != null) {
+            getActivity().findViewById(R.id.progressBar).setVisibility(View.INVISIBLE);
+        }
 
         try {
             summary = resonce.getJSONArray("data");
