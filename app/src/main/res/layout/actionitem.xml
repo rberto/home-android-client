@@ -34,4 +34,9 @@
             android:textColor="#669900"
             android:textSize="25dp" />
     </RelativeLayout>
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="right"></GridLayout>
 </LinearLayout>

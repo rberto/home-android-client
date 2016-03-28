@@ -35,7 +35,7 @@ import static android.graphics.Color.GRAY;
  * Use the {@link ChartFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ChartFragment extends Fragment implements RequestReciever, OnChartValueSelectedListener {
+public class ChartFragment extends Fragment implements RequestReciever<JSONObject>, OnChartValueSelectedListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";

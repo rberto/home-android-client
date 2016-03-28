@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 
 import com.example.romain.home.model.Requests;
 import com.example.romain.home.views.ActionsFragment;
+import com.example.romain.home.views.CameraFragment;
 import com.example.romain.home.views.ItemFragment;
 import com.example.romain.home.views.items.ActionsItem;
 
@@ -61,13 +62,18 @@ public class MainActivity extends Activity
         switch(position) {
             case 0:
                 current_fragment = ItemFragment.newInstance();
-                getRequest request = new getRequest((ItemFragment)current_fragment, getApplicationContext());
+                getRequest request = new getJsonRequest((ItemFragment)current_fragment, getApplicationContext());
                 request.execute(Requests.SUMMARY);
                 break;
             case 1:
                 current_fragment = ActionsFragment.newInstance();
-                getRequest request1 = new getRequest((ActionsFragment)current_fragment, getApplicationContext());
+                getRequest request1 = new getJsonRequest((ActionsFragment)current_fragment, getApplicationContext());
                 request1.execute(Requests.LIST_ACTIONS);
+                break;
+            case 2:
+                current_fragment = CameraFragment.newInstance();
+                getRequest request2 = new getBitmapRequest((CameraFragment)current_fragment, getApplicationContext());
+                request2.execute(Requests.IMG);
                 break;
         }
         fragmentManager.beginTransaction()
@@ -128,7 +134,7 @@ public class MainActivity extends Activity
     public void onFragmentInteraction(String id) {
         FragmentManager fragmentManager = getFragmentManager();
         current_fragment = ChartFragment.newInstance();
-        getRequest r = new getRequest((ChartFragment)current_fragment, getApplicationContext());
+        getRequest r = new getJsonRequest((ChartFragment)current_fragment, getApplicationContext());
         Requests re = Requests.DATA;
         re.setArgs(new String[]{id});
         r.execute(re);
@@ -139,7 +145,7 @@ public class MainActivity extends Activity
 
     @Override
     public void onActionInteraction(String id) {
-        getRequest r = new getRequest((ActionsFragment)current_fragment, getApplicationContext());
+        getRequest r = new getJsonRequest((ActionsFragment)current_fragment, getApplicationContext());
         Requests re = Requests.SEND_ACTION;
         re.setArgs(new String[]{id});
         r.execute(re);

@@ -14,16 +14,17 @@ import com.example.romain.home.model.Requests;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.OutputStream;
 import java.lang.ref.WeakReference;
 
 /**
  * Created by romain on 30/11/14.
  */
-public class getRequest extends AsyncTask<Requests, Integer, String> {
+public abstract class getRequest extends AsyncTask<Requests, Integer, OutputStream> {
 
     private Context mContext;
-    private WeakReference<RequestReciever> fragmentWeakRef;
-    private Requests request;
+    protected WeakReference<RequestReciever> fragmentWeakRef;
+    protected Requests request;
 
     public getRequest(RequestReciever frag, Context context){
         this.fragmentWeakRef = new WeakReference<RequestReciever>(frag);
@@ -49,7 +50,7 @@ public class getRequest extends AsyncTask<Requests, Integer, String> {
     }
 
     @Override
-    protected String doInBackground(Requests... r) {
+    protected OutputStream doInBackground(Requests... r) {
         request = r[0];
 
         Log.i("wifi", getWifiName(mContext));
@@ -71,20 +72,4 @@ public class getRequest extends AsyncTask<Requests, Integer, String> {
         return RequestSender.getInstance().sendRequest(request);
     }
 
-    @Override
-    protected void onPostExecute(String result) {
-        super.onPostExecute(result);
-        if (result != null){
-            Log.i("HOME", result);
-            JSONObject mainObject = null;
-            try {
-                mainObject = new JSONObject(result);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            if (this.fragmentWeakRef.get() != null) {
-                this.fragmentWeakRef.get().onResponce(mainObject, request);
-            }
-        }
-    }
 }

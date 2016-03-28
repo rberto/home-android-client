@@ -37,7 +37,7 @@ import java.util.ArrayList;
  * Activities containing this fragment MUST implement the {@link OnActionInteractionListener}
  * interface.
  */
-public class ActionsFragment extends Fragment implements AbsListView.OnItemClickListener, RequestReciever {
+public class ActionsFragment extends Fragment implements AbsListView.OnItemClickListener, RequestReciever<JSONObject> {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -149,7 +149,9 @@ public class ActionsFragment extends Fragment implements AbsListView.OnItemClick
 
     public void updateList(){
 
-        getActivity().findViewById(R.id.progressBar).setVisibility(View.INVISIBLE);
+        if (getActivity() != null && getActivity().findViewById(R.id.progressBar) != null) {
+            getActivity().findViewById(R.id.progressBar).setVisibility(View.INVISIBLE);
+        }
 
         mAdapter = new ActionItemArrayAdapter(getActivity(), actionsItems);
 
@@ -163,7 +165,9 @@ public class ActionsFragment extends Fragment implements AbsListView.OnItemClick
 
     @Override
     public void onResponce(JSONObject resonce, Requests request) {
-        getActivity().findViewById(R.id.progressBar).setVisibility(View.INVISIBLE);
+        if (getActivity() != null && getActivity().findViewById(R.id.progressBar) != null) {
+            getActivity().findViewById(R.id.progressBar).setVisibility(View.INVISIBLE);
+        }
         try {
             actions = resonce.getJSONArray("data");
             actionsItems = (ArrayList<ActionsItem>) DataFactory.builActionsItems(actions);

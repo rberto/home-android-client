@@ -42,7 +42,7 @@ import static com.example.romain.home.model.factories.DataFactory.builItems;
  * Activities containing this fragment MUST implement the {@link OnFragmentInteractionListener}
  * interface.
  */
-public class ItemFragment extends Fragment implements AbsListView.OnItemClickListener, RequestReciever {
+public class ItemFragment extends Fragment implements AbsListView.OnItemClickListener, RequestReciever<JSONObject> {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER

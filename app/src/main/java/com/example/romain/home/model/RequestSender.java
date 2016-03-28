@@ -13,8 +13,10 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 
 /**
  * Created by romain on 15/07/15.
@@ -44,7 +46,8 @@ public class RequestSender {
         return url;
     }
 
-    public String sendRequest(Requests request){
+    public OutputStream sendRequest(Requests request){
+        ByteArrayOutputStream out = null;
         HttpClient httpclient = new MyHttpClient(context);
         HttpResponse response;
         String responseString = null;
@@ -60,7 +63,7 @@ public class RequestSender {
             if (statusLine.getStatusCode() == HttpStatus.SC_OK) {
                 Log.i("HOME", "statusline OK");
 
-                ByteArrayOutputStream out = new ByteArrayOutputStream();
+                out = new ByteArrayOutputStream();
                 response.getEntity().writeTo(out);
                 out.close();
                 Log.i("HOME", "closed");
@@ -83,7 +86,7 @@ public class RequestSender {
             Log.e("HOME", "No network connection!");
             e.printStackTrace();
         }
-        return responseString;
+        return out;
     }
 
     public String getPassword() {

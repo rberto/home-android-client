@@ -8,7 +8,8 @@ public enum Requests {
     SUMMARY("summary"),
     LIST_ACTIONS("list_actions"),
     SEND_ACTION("send_action"),
-    DATA("data");
+    DATA("data"),
+    IMG("img");
 
     private String key;
     private String[] args;
