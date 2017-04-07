@@ -53,7 +53,7 @@ public class MyHttpClient extends DefaultHttpClient {
 
     public class MyHstNameVerifier extends org.apache.http.conn.ssl.AbstractVerifier {
 
-        String[] allowHost = {"rb", "192.168.1.33", "128.79.58.158"};
+        String[] allowHost = {"rb", "192.168.0.104", "128.79.58.158"};
 
         @Override
 

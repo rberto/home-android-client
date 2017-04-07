@@ -60,8 +60,10 @@ public abstract class getRequest extends AsyncTask<Requests, Integer, OutputStre
         Log.d("wifiInfo", wifiInfo.toString());
         Log.d("SSID", wifiInfo.getSSID());
 
-        if (wifiInfo.getSSID().contains("Bbox-A7A999C0-5GHz")){
-            RequestSender.getInstance().setAddress("192.168.1.33");
+        String ssid = wifiInfo.getSSID();
+
+        if (ssid.contains("TP-LINK_A501") || wifiInfo.getSSID().contains("TP-LINK_A500_5G")){
+            RequestSender.getInstance().setAddress("192.168.0.104");
         }else{
             RequestSender.getInstance().setAddress("128.79.58.158");
         }
