@@ -1,11 +1,13 @@
 package com.example.romain.home;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.example.romain.home.model.RequestSender;
@@ -61,16 +63,19 @@ public abstract class getRequest extends AsyncTask<Requests, Integer, OutputStre
         Log.d("SSID", wifiInfo.getSSID());
 
         String ssid = wifiInfo.getSSID();
-
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(mContext);
         if (ssid.contains("TP-LINK_A501") || wifiInfo.getSSID().contains("TP-LINK_A500_5G")){
-            RequestSender.getInstance().setAddress("192.168.0.104");
+
+            String syncConnPref = sharedPref.getString("server_ip_add", "");
+            RequestSender.getInstance().setAddress(syncConnPref);
         }else{
-            RequestSender.getInstance().setAddress("128.79.58.158");
+            String syncConnPref = sharedPref.getString("server_remote_ip", "");
+            RequestSender.getInstance().setAddress(syncConnPref);
         }
         RequestSender.getInstance().setContext(mContext);
-        RequestSender.getInstance().setPassword("azerty");
+        RequestSender.getInstance().setPassword(sharedPref.getString("password", ""));
         RequestSender.getInstance().setPort("8889");
-        RequestSender.getInstance().setUser("romain");
+        RequestSender.getInstance().setUser(sharedPref.getString("username", ""));
         return RequestSender.getInstance().sendRequest(request);
     }
 

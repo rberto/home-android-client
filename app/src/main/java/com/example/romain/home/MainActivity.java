@@ -18,6 +18,7 @@ import com.example.romain.home.views.ActionsFragment;
 import com.example.romain.home.views.CameraFragment;
 import com.example.romain.home.views.ItemFragment;
 import com.example.romain.home.views.items.ActionsItem;
+import com.example.romain.home.views.settings.SettingsFragment;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -121,11 +122,12 @@ public class MainActivity extends Activity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-//        if (id == R.id.refresh) {
-//            current_fragment.refresh();
-//            return true;
-//        }
+        if (id == R.id.action_settings) {
+            FragmentManager fragmentManager = getFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.container, new SettingsFragment()).addToBackStack("tag")
+                    .commit();
+        }
 
         return super.onOptionsItemSelected(item);
     }
